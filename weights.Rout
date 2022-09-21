@@ -1,0 +1,310 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> # Rotemberg weights and associated calculations for basic version without lagged inflation cocntrols.
+> # Returns weights.pdf, weightsTime.pdf, weights.tex.
+> 
+> library(fredr) 
+> library(ggplot2)
+> library(bartik.weight)
+> library(fixest)
+Warning message:
+package ‘fixest’ was built under R version 4.1.2 
+> library(modelsummary)
+> library(tidyverse)
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ tibble  3.1.7     ✔ dplyr   1.0.7
+✔ tidyr   1.1.4     ✔ stringr 1.4.0
+✔ readr   2.0.2     ✔ forcats 0.5.1
+✔ purrr   0.3.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Warning message:
+package ‘tibble’ was built under R version 4.1.2 
+> library(corrr)
+> library(latex2exp)
+Warning message:
+package ‘latex2exp’ was built under R version 4.1.2 
+> library(viridis)
+Loading required package: viridisLite
+> library(ggrepel)
+> library(zoo)
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> library(kableExtra)
+
+Attaching package: ‘kableExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    group_rows
+
+Warning message:
+package ‘kableExtra’ was built under R version 4.1.2 
+> 
+> setwd("~/Temp/make-testr")
+> master_dataSmall <- read_csv("data/dataBuild/masterdataSmall.csv") %>% filter(!is.na(REGION)) %>% filter(!is.na(pe)) %>% filter(!is.na(RegInf))
+Rows: 2128 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (3): pe, REGION, RegInf
+date (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> data_localSmall <- read_csv("data/dataBuild/localdataSmall.csv") %>% filter(!is.na(REGION))
+Rows: 2124 Columns: 49080
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (49079): REGION, t1978-01-01_sh_ind_100, t1978-01-01_sh_ind_101, t1978-...
+date     (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> data_globalSmall <- read_csv("data/dataBuild/globaldataSmall.csv")
+Rows: 49078 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (2): industry, Agg_pe_ind
+date (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataSmall <-  read_csv("data/dataBuild/paneldataSmall.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   select(-c(year))
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik, UNRATE, AggUNRATE, ye, gasExp, FinBet...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> 
+> 
+> 
+> #conform data sets;
+> fixdSmall <- merge(master_dataSmall,data_localSmall)
+> fixlSmall <- fixdSmall %>%
++   select(-c("pe","RegInf")) %>%
++   as_tibble()
+> fixmSmall <- fixdSmall %>%
++   select(c("survey_date", "pe", "REGION", "RegInf"))
+> fixgSmall <- data_globalSmall
+> 
+> fixmcSmall <- merge(fixmSmall,paneldataSmall) %>%
++   select(-c(Bartik, yearquarter, ye, UNRATE,   gasExp, RincUp,  BizGood, BizExGood, FinBetterNext1, FinBetterLast1, UNEMPGood))%>%
++   as_tibble()
+> 
+> 
+> # Rotemberg weights using Goldsmith-Pinkham, Sorkin, and Swift (2019) R-package.
+> 
+> index = c("REGION", "survey_date")
+> y = "RegInf"
+> x = "pe"
+> Z = setdiff(names(fixlSmall), c(index))
+> G = "Agg_pe_ind"
+> controls = NULL
+> weight = NULL
+> controls = setdiff(names(fixmcSmall), c(index, y, x, weight))
+> 
+> 
+> Bw = bw(fixmcSmall, y, x, controls, weight, fixlSmall, Z, fixgSmall, G)
+> 
+> 
+> Bwagg <- Bw %>%
++   filter(!is.na(beta))%>%
++   group_by(industry) %>%
++   summarise(AggAlpha = sum(alpha), AggBeta = sum(alpha*beta)/AggAlpha) 
+> 
+> 
+> BwaggTime <- Bw %>%
++   filter(!is.na(beta)) %>%
++   group_by(survey_date) %>%
++   summarise(AggAlpha = sum(alpha), AggBeta = sum(beta)) %>%
++   mutate(betat = AggAlpha*AggBeta) 
+> 
+>   
+> pT <- ggplot(data = BwaggTime, aes(x=survey_date, y= AggAlpha)) + geom_line(colour = rgb(0.0,0.2,0.5)) +
++   xlab(TeX("date"))+ylab(TeX("$\\alpha_{k}$")) +
++   theme(panel.border = element_blank(),
++         panel.background = element_blank(),
++         panel.grid.minor = element_blank(),
++         axis.line = element_line(colour = "grey"))
+> ggsave("figs/weightsTime.pdf", pT)
+Saving 7 x 7 in image
+> 
+> region_data2 <- local_dataBig_Small %>%
++   select(c("survey_date", "REGION", "industry", "PX1")) %>%
++   #drop_na() %>%
++   group_by(REGION, survey_date, industry) %>%
++   summarise(n=n( ), pe = mean(PX1,na.rm=TRUE)) %>%
++   mutate(prop = n/sum(n, na.rm = TRUE)) 
+`summarise()` has grouped output by 'REGION', 'survey_date'. You can override using the `.groups` argument.
+>   
+> # Calculate first-stage F stat's.
+> 
+> fixmcSmall <- merge(fixmSmall,paneldataSmall) %>%
++   #select(-c(Bartik, yearquarter, ye, UNRATE,   gasExp, RincUp,  BizGood, BizExGood, FinBetterNext1, FinBetterLast1, UNEMPGood))%>%
++   as_tibble()
+> 
+> Fk <- matrix(0,160,1)
+> ck <- matrix(0,160,1)
+> for (i in 1:160){
++   data  <-  filter(region_data2, industry == i);
++   
++   if (dim(data)[1]>10){
++   data2 <- filter(fixgSmall, industry == i);
++   data3 <- paneldataSmall %>% select(c("survey_date", "yearquarter"))
++   data4 <- fixmcSmall %>% select(-c("pe", "RegInf", "Bartik"))
++   data <- merge(data, data2) %>% merge(data3) %>% merge(data4) %>% mutate(inst = prop*Agg_pe_ind)
++   #data <- data %>% panel(~REGION + survey_date);
++   est <- feols(pe ~ inst + UNRATE + FinBetterLast1 + AggUNRATE+ RincUp + BizGood + BizExGood + FinBetterNext1 + UNEMPGood   , data)
++ 
++   Fk[i] <- fitstat(est, ~f.stat)[[1]]
++   } else {-1000}
++   
++ }
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 16 observations removed because of NA values (RHS: 16).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 12 observations removed because of NA values (RHS: 12).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 8 observations removed because of NA values (RHS: 8).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+Variables 'FinBetterNext1' and 'UNEMPGood' have been removed because of collinearity (see $collin.var).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+NOTE: 4 observations removed because of NA values (RHS: 4).
+The variable 'UNEMPGood' has been removed because of collinearity (see $collin.var).
+NOTE: 20 observations removed because of NA values (RHS: 20).
+> 
+> estF <- feols(RegInf ~ UNRATE + FinBetterLast1 + RincUp + BizGood + BizExGood + FinBetterNext1 + UNEMPGood | REGION |  pe ~ Bartik + yearquarter  , paneldataSmall)
+NOTE: 257 observations removed because of NA values (LHS: 252, RHS: 5).
+> 
+> 
+> bnot <- coefficients(estF)[[1]]
+> Bwagg <- Bwagg %>% mutate(Fstats = Fk) 
+> 
+> BwaggSmall <- Bwagg %>% filter(abs(AggBeta) < 5, abs(Fstats) < 200)
+> Bwagg2 <- BwaggSmall %>%
++   top_n(10, AggAlpha) %>%
++   arrange(desc(AggAlpha))
+> 
+> Bwagg2 <- Bwagg2 %>% mutate(group = c("Ml,18-24,hs,M,NK", "Ml,35-49,sc,M,NK", "Ml,25-34,hs,M,NK","Ml,35-49,hs,M,NK", "Fl,18-24,sc,M,K", "Fl,50-64,hs,M,K", "Fl,18-24,<hs,M,NK","Fl,50-64,c,M,NK", "Fl,18-24,hs,M,NK", "Ml,50-64,c,M,K"))
+> 
+> pB <- ggplot(data = BwaggSmall, aes(x=Fstats, y=AggBeta, size = AggAlpha, fill = industry, shape = AggAlpha<0)) + geom_point(show.legend = FALSE) +
++   geom_point(data=Bwagg2, aes(x=Fstats, y=AggBeta,  fill = industry), shape =  21, size = 18, alpha = 0.5, colour = "black" ) + 
++   scale_fill_viridis(discrete=FALSE, guide="none", option="A") +
++   geom_hline(yintercept=bnot, linetype = "dashed", colour = "red") + 
++   scale_y_continuous(breaks = c(-2, 0, bnot, 2, 4), labels = c("-2", "0", TeX("$\\hat{\\beta}$"), "2", "4" )) +
++   xlab(TeX("$F_k$"))+ylab(TeX("$\\beta_{k}$")) +
++   ggrepel::geom_label_repel(aes(label = group), data = Bwagg2, box.padding = 2, fill = "white") + 
++   theme(panel.border = element_blank(),panel.background = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = "grey"), axis.text = element_text(size = 12), legend.position = "none")  
+> 
+> ggsave("figs/weights.pdf", pB)
+Saving 7 x 7 in image
+Warning message:
+ggrepel: 5 unlabeled data points (too many overlaps). Consider increasing max.overlaps 
+>        
+> printAgg <- Bwagg2 %>% select(c(group,AggAlpha, AggBeta)) 
+> 
+> 
+> 
+> knitr::kable(printAgg, "latex", booktabs = T, col.names = c("group", "alpha_k", "beta_k"), caption = "Bias Correction") %>%
++   kable_styling(latex_options = "striped") %>%
++   footnote(general = "Summarizes Rotemberg weights. Group format is (sex, age, educ, marital status, children). Ml = male, Fl = female, hs = h.s. degree, sc = college, no degree, c = college degree, M = married, K = has children, NK = no children." , threeparttable = T) %>%
++   save_kable("tables/weights.tex")
+>                                                            
+> 
+> 
+> proc.time()
+    user   system  elapsed 
+2317.837  514.669  299.269 

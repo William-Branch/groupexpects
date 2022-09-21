@@ -1,0 +1,41 @@
+\begin{table}
+
+\caption{\label{tab:base:out:2sls:stage2}2SLS: coefficient estimates}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{lll}
+\toprule
+  & survey & CPS78\\
+\midrule
+\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{RegInf} & \cellcolor{gray!6}{RegInf}\\
+\addlinespace
+ &  & \\
+\addlinespace
+\cellcolor{gray!6}{pe} & \cellcolor{gray!6}{0.3275* (0.1409)} & \cellcolor{gray!6}{0.5464** (0.1940)}\\
+\addlinespace
+Controls & Yes & Yes\\
+\addlinespace
+\cellcolor{gray!6}{Fixed-Effects:} & \cellcolor{gray!6}{----------------} & \cellcolor{gray!6}{-----------------}\\
+\addlinespace
+REGION & Yes & Yes\\
+\addlinespace
+\cellcolor{gray!6}{TIME} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
+\addlinespace
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+\addlinespace
+\cellcolor{gray!6}{S.E. type} & \cellcolor{gray!6}{Dris.-Kra. (L=4)} & \cellcolor{gray!6}{Drisc.-Kra. (L=4)}\\
+\addlinespace
+Observations & 1,387 & 1,387\\
+\addlinespace
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.95440} & \cellcolor{gray!6}{0.93976}\\
+\addlinespace
+Within R2 & 0.55825 & 0.41650\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item \textit{Note: } 
+\item Instruments computed using a leave-one-out procedure. Survey is the shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
+\item[1] Signif. codes: * = .05; ** = .01; *** = .001.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

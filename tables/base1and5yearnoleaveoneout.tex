@@ -1,0 +1,42 @@
+\begin{table}
+
+\caption{2SLS with short and long-expectations: coefficient estimates}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{lll}
+\toprule
+  & survey & CPS78\\
+\midrule
+\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{RegInf} & \cellcolor{gray!6}{RegInf}\\
+\addlinespace
+ &  & \\
+\addlinespace
+\cellcolor{gray!6}{short-run pe} & \cellcolor{gray!6}{0.1280** (0.0445)} & \cellcolor{gray!6}{0.2289*** (0.0621)}\\
+\addlinespace
+long-run pe & 0.0022 (0.0085) & 0.0206 (0.0241)\\
+\addlinespace
+\cellcolor{gray!6}{Controls} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
+\addlinespace
+Fixed-Effects: & ----------------- & ------------------\\
+\addlinespace
+\cellcolor{gray!6}{REGION} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
+\addlinespace
+TIME & Yes & Yes\\
+\addlinespace
+\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\\
+\addlinespace
+S.E. type & Drisc.-Kra. (L=4) & Drisco.-Kra. (L=4)\\
+\addlinespace
+\cellcolor{gray!6}{Observations} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387}\\
+\addlinespace
+R2 & 0.96015 & 0.95738\\
+\addlinespace
+\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.61397} & \cellcolor{gray!6}{0.58712}\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item \textit{Note: } 
+\item Survey is the benchmark shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

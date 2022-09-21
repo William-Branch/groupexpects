@@ -1,0 +1,42 @@
+\begin{table}
+
+\caption{Results with alternative data }
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{llll}
+\toprule
+  & Small & First & State\\
+\midrule
+\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{RegInf} & \cellcolor{gray!6}{RegInf} & \cellcolor{gray!6}{RegInf}\\
+\addlinespace
+ &  &  & \\
+\addlinespace
+\cellcolor{gray!6}{pe} & \cellcolor{gray!6}{0.1401**} & \cellcolor{gray!6}{0.0695*} & \cellcolor{gray!6}{0.1199**}\\
+\addlinespace
+ & (0.0483) & (0.0306) & (0.0454)\\
+\addlinespace
+\cellcolor{gray!6}{Controls} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
+\addlinespace
+Fixed-Effects: & --------- & -------- & ---------\\
+\addlinespace
+\cellcolor{gray!6}{REGION} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
+\addlinespace
+TIME & Yes & Yes & Yes\\
+\addlinespace
+\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_}\\
+\addlinespace
+S.E. type & Dri.-Kra. (L=4) & Dri.-Kra. (L=4) & Dri.-Kra. (L=4)\\
+\addlinespace
+\cellcolor{gray!6}{Observations} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,427}\\
+\addlinespace
+R2 & 0.96020 & 0.96009 & 0.95995\\
+\addlinespace
+\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.61445} & \cellcolor{gray!6}{0.61342} & \cellcolor{gray!6}{0.62801}\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item \textit{Note: } 
+\item *Notes:* Alternative data definitions.  ``Small'' removes outlier survey expectations. ``First'' restricts to 1st time survey respondents. ``State'' computes regional inflation from state CPI.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

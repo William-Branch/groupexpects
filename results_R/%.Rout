@@ -1,0 +1,294 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> # generate the 5 year tables with survey and CPS 78 shares + applying split-sample Jackknife bias correction.
+> # outputs:  base1and5yearStage1.tex, base1and5year.tex,  base5yearStage1.tex, base5year.tex, redform5only.pdf, firstStage5only.pdf.
+> 
+> library(tidyverse)
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.7
+✔ tidyr   1.1.4     ✔ stringr 1.4.0
+✔ readr   2.0.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Warning message:
+package ‘tibble’ was built under R version 4.1.2 
+> library(zoo)
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> library(gridExtra)
+
+Attaching package: ‘gridExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    combine
+
+> library(fredr)
+> library(ggplot2)
+> library(bartik.weight)
+> library(ipumsr)
+Warning message:
+package ‘ipumsr’ was built under R version 4.1.2 
+> library(fixest)
+Warning message:
+package ‘fixest’ was built under R version 4.1.2 
+> library(kableExtra)
+
+Attaching package: ‘kableExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    group_rows
+
+Warning message:
+package ‘kableExtra’ was built under R version 4.1.2 
+> 
+> 
+> setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+> 
+> cps78 <- read_csv("data/cps_00002.csv")
+Rows: 4532303 Columns: 18
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (18): YEAR, SERIAL, MONTH, HWTFINL, CPSID, ASECFLAG, HFLAG, ASECWTH, REG...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> data_globalCPSw5 <- read_csv("data/dataBuild/globaldatawith5.csv")
+Rows: 49780 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (3): industry, Agg_pe_ind, Agg_pe5_ind
+date (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataw5 <-  read_csv("data/dataBuild/paneldatawith5.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2128 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (16): REGION, pe, pe5, RegInf, Bartik, Bartik5, UNRATE, AggUNRATE, ye, ...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> region_dataw5 <- read_csv("data/dataBuild/regiondatawith5.csv") %>%
++   mutate(cenREGION = REGION, group = industry) %>%
++   select(-c(n, industry, REGION))
+Rows: 114956 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (4): REGION, industry, n, prop
+date (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> local_dataBig <- read_csv("data/dataBuild/localdataBig.csv")
+Rows: 275679 Columns: 113
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (112): CASEID, YYYYMM, YYYYQ, YYYY, ID, IDPREV, DATEPR, ICS, ICC, ICE, ...
+date   (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> 
+> 
+> local_dataCPS78 <- cps78 %>%
++   mutate(
++     group = case_when(
++       SEX == 1 & AGE %in% (18:24) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 1,
++       SEX == 1 & AGE %in% (18:24) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 2,
++       SEX == 1 & AGE %in% (18:24) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 3,
++       SEX == 1 & AGE %in% (18:24) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 4,
++       SEX == 1 & AGE %in% (18:24) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 5,
++       SEX == 1 & AGE %in% (18:24) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 6,
++       SEX == 1 & AGE %in% (18:24) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 7,
++       SEX == 1 & AGE %in% (18:24) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 8,
++       SEX == 1 & AGE %in% (18:24) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 9,
++       SEX == 1 & AGE %in% (18:24) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 10,
++       SEX == 1 & AGE %in% (18:24) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 11,
++       SEX == 1 & AGE %in% (18:24) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 12,
++       SEX == 1 & AGE %in% (18:24) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 13,
++       SEX == 1 & AGE %in% (18:24) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 14,
++       SEX == 1 & AGE %in% (18:24) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 15,
++       SEX == 1 & AGE %in% (18:24) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 16,
++       SEX == 1 & AGE %in% (25:34) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 17,
++       SEX == 1 & AGE %in% (25:34) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 18,
++       SEX == 1 & AGE %in% (25:34) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 19,
++       SEX == 1 & AGE %in% (25:34) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 20,
++       SEX == 1 & AGE %in% (25:34) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 21,
++       SEX == 1 & AGE %in% (25:34) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 22,
++       SEX == 1 & AGE %in% (25:34) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 23,
++       SEX == 1 & AGE %in% (25:34) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 24,
++       SEX == 1 & AGE %in% (25:34) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 25,
++       SEX == 1 & AGE %in% (25:34) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 26,
++       SEX == 1 & AGE %in% (25:34) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 27,
++       SEX == 1 & AGE %in% (25:34) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 28,
++       SEX == 1 & AGE %in% (25:34) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 29,
++       SEX == 1 & AGE %in% (25:34) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 30,
++       SEX == 1 & AGE %in% (25:34) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 31,
++       SEX == 1 & AGE %in% (25:34) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 32,
++       SEX == 1 & AGE %in% (35:49) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 33,
++       SEX == 1 & AGE %in% (35:49) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 34,
++       SEX == 1 & AGE %in% (35:49) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 35,
++       SEX == 1 & AGE %in% (35:49) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 36,
++       SEX == 1 & AGE %in% (35:49) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 37,
++       SEX == 1 & AGE %in% (35:49) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 38,
++       SEX == 1 & AGE %in% (35:49) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 39,
++       SEX == 1 & AGE %in% (35:49) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 40,
++       SEX == 1 & AGE %in% (35:49) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 41,
++       SEX == 1 & AGE %in% (35:49) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 42,
++       SEX == 1 & AGE %in% (35:49) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 43,
++       SEX == 1 & AGE %in% (35:49) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 44,
++       SEX == 1 & AGE %in% (35:49) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 45,
++       SEX == 1 & AGE %in% (35:49) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 46,
++       SEX == 1 & AGE %in% (35:49) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 47,
++       SEX == 1 & AGE %in% (35:49) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 48,
++       SEX == 1 & AGE %in% (50:64) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 49,
++       SEX == 1 & AGE %in% (50:64) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 50,
++       SEX == 1 & AGE %in% (50:64) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 51,
++       SEX == 1 & AGE %in% (50:64) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 52,
++       SEX == 1 & AGE %in% (50:64) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 53,
++       SEX == 1 & AGE %in% (50:64) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 54,
++       SEX == 1 & AGE %in% (50:64) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 55,
++       SEX == 1 & AGE %in% (50:64) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 56,
++       SEX == 1 & AGE %in% (50:64) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 57,
++       SEX == 1 & AGE %in% (50:64) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 58,
++       SEX == 1 & AGE %in% (50:64) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 59,
++       SEX == 1 & AGE %in% (50:64) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 60,
++       SEX == 1 & AGE %in% (50:64) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 61,
++       SEX == 1 & AGE %in% (50:64) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 62,
++       SEX == 1 & AGE %in% (50:64) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 63,
++       SEX == 1 & AGE %in% (50:64) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 64,
++       SEX == 1 & AGE > 64 & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 65,
++       SEX == 1 & AGE > 64 & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 66,
++       SEX == 1 & AGE > 64 & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 67,
++       SEX == 1 & AGE > 64 & EDUC <72 & MARST == 6 & NCHILD >0 ~ 68,
++       SEX == 1 & AGE > 64 & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 69,
++       SEX == 1 & AGE > 64 & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 70,
++       SEX == 1 & AGE > 64 & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 71,
++       SEX == 1 & AGE > 64 & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 72,
++       SEX == 1 & AGE > 64 & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 73,
++       SEX == 1 & AGE > 64 & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 74,
++       SEX == 1 & AGE > 64 & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 75,
++       SEX == 1 & AGE > 64 & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 76,
++       SEX == 1 & AGE > 64 & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 77,
++       SEX == 1 & AGE > 64 & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 78,
++       SEX == 1 & AGE > 64 & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 79,
++       SEX == 1 & AGE > 64 & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 80,
++       SEX == 2 & AGE %in% (18:24) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 81,
++       SEX == 2 & AGE %in% (18:24) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 82,
++       SEX == 2 & AGE %in% (18:24) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 83,
++       SEX == 2 & AGE %in% (18:24) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 84,
++       SEX == 2 & AGE %in% (18:24) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 85,
++       SEX == 2 & AGE %in% (18:24) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 86,
++       SEX == 2 & AGE %in% (18:24) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 87,
++       SEX == 2 & AGE %in% (18:24) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 88,
++       SEX == 2 & AGE %in% (18:24) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 89,
++       SEX == 2 & AGE %in% (18:24) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 90,
++       SEX == 2 & AGE %in% (18:24) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 91,
++       SEX == 2 & AGE %in% (18:24) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 92,
++       SEX == 2 & AGE %in% (18:24) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 93,
++       SEX == 2 & AGE %in% (18:24) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 94,
++       SEX == 2 & AGE %in% (18:24) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 95,
++       SEX == 2 & AGE %in% (18:24) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 96,
++       SEX == 2 & AGE %in% (25:34) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 97,
++       SEX == 2 & AGE %in% (25:34) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 98,
++       SEX == 2 & AGE %in% (25:34) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 99,
++       SEX == 2 & AGE %in% (25:34) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 100,
++       SEX == 2 & AGE %in% (25:34) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 101,
++       SEX == 2 & AGE %in% (25:34) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 102,
++       SEX == 2 & AGE %in% (25:34) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 103,
++       SEX == 2 & AGE %in% (25:34) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 104,
++       SEX == 2 & AGE %in% (25:34) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 105,
++       SEX == 2 & AGE %in% (25:34) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 106,
++       SEX == 2 & AGE %in% (25:34) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 107,
++       SEX == 2 & AGE %in% (25:34) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 108,
++       SEX == 2 & AGE %in% (25:34) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 109,
++       SEX == 2 & AGE %in% (25:34) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 110,
++       SEX == 2 & AGE %in% (25:34) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 111,
++       SEX == 2 & AGE %in% (25:34) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 112,
++       SEX == 2 & AGE %in% (35:49) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 113,
++       SEX == 2 & AGE %in% (35:49) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 114,
++       SEX == 2 & AGE %in% (35:49) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 115,
++       SEX == 2 & AGE %in% (35:49) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 116,
++       SEX == 2 & AGE %in% (35:49) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 117,
++       SEX == 2 & AGE %in% (35:49) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 118,
++       SEX == 2 & AGE %in% (35:49) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 119,
++       SEX == 2 & AGE %in% (35:49) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 120,
++       SEX == 2 & AGE %in% (35:49) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 121,
++       SEX == 2 & AGE %in% (35:49) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 122,
++       SEX == 2 & AGE %in% (35:49) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 123,
++       SEX == 2 & AGE %in% (35:49) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 124,
++       SEX == 2 & AGE %in% (35:49) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 125,
++       SEX == 2 & AGE %in% (35:49) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 126,
++       SEX == 2 & AGE %in% (35:49) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 127,
++       SEX == 2 & AGE %in% (35:49) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 128,
++       SEX == 2 & AGE %in% (50:64) & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 129,
++       SEX == 2 & AGE %in% (50:64) & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 130,
++       SEX == 2 & AGE %in% (50:64) & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 131,
++       SEX == 2 & AGE %in% (50:64) & EDUC <72 & MARST == 6 & NCHILD >0 ~ 132,
++       SEX == 2 & AGE %in% (50:64) & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 133,
++       SEX == 2 & AGE %in% (50:64) & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 134,
++       SEX == 2 & AGE %in% (50:64) & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 135,
++       SEX == 2 & AGE %in% (50:64) & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 136,
++       SEX == 2 & AGE %in% (50:64) & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 137,
++       SEX == 2 & AGE %in% (50:64) & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 138,
++       SEX == 2 & AGE %in% (50:64) & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 139,
++       SEX == 2 & AGE %in% (50:64) & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 140,
++       SEX == 2 & AGE %in% (50:64) & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 141,
++       SEX == 2 & AGE %in% (50:64) & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 142,
++       SEX == 2 & AGE %in% (50:64) & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 143,
++       SEX == 2 & AGE %in% (50:64) & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 144,
++       SEX == 2 & AGE > 64 & EDUC <72 & !MARST ==6 & NCHILD ==0 ~ 145,
++       SEX == 2 & AGE > 64 & EDUC <72 & !MARST ==6 & NCHILD >0 ~ 146,
++       SEX == 2 & AGE > 64 & EDUC <72 & MARST == 6 & NCHILD == 0 ~ 147,
++       SEX == 2 & AGE > 64 & EDUC <72 & MARST == 6 & NCHILD >0 ~ 148,
++       SEX == 2 & AGE > 64 & EDUC == 73 & !MARST ==6 & NCHILD ==0 ~ 149,
++       SEX == 2 & AGE > 64 & EDUC == 73 & !MARST ==6 & NCHILD > 0 ~ 150,
++       SEX == 2 & AGE > 64 & EDUC == 73 & MARST == 6 & NCHILD == 0 ~ 151,
++       SEX == 2 & AGE > 64 & EDUC == 73 & MARST == 6 & NCHILD > 0 ~ 152,
++       SEX == 2 & AGE > 64 & EDUC %in% (80-110) & !MARST ==6 & NCHILD == 0 ~ 153,
++       SEX == 2 & AGE > 64 & EDUC %in% (80-110) & !MARST ==6 & NCHILD > 0 ~ 154,
++       SEX == 2 & AGE > 64 & EDUC %in% (80-110) & MARST == 6 & NCHILD == 0 ~ 155,
++       SEX == 2 & AGE > 64 & EDUC %in% (80-110) & MARST == 6 & NCHILD >0 ~ 156,
++       SEX == 2 & AGE > 64 & EDUC > 110 & !MARST ==6 & NCHILD == 0 ~ 157,
++       SEX == 2 & AGE > 64 & EDUC > 110 & !MARST ==6 & NCHILD > 0 ~ 158,
++       SEX == 2 & AGE > 64 & EDUC > 110 & MARST == 6 & NCHILD ==0 ~ 159,
++       SEX == 2 & AGE > 64 & EDUC > 110 & MARST == 6 & NCHILD > 0 ~ 160,
++       
++       
++       
++     )
++   ) 
+
+Execution halted

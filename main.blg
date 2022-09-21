@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2020)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: /Users/billbranch/Dropbox/Cloud/Research/bibliography/econometrica.bst
+Database file #1: /Users/billbranch/Dropbox/Cloud/Research/bibliography/library_research_bill.bib
+Warning--empty institution in AngelicoGiacomo:WP
+Warning--there's a number but no volume in BlanchardKatz
+Warning--empty institution in Werning:expectsWP
+Warning--empty publisher in Woodford:annualreview
+Done.
+You've used 29 entries,
+            2327 wiz_defined-function locations,
+            704 strings with 8400 characters,
+and the built_in function-call counts, 14329 in all, are:
+= -- 1342
+> -- 910
+< -- 0
++ -- 298
+- -- 272
+* -- 1332
+:= -- 2797
+add.period$ -- 32
+call.type$ -- 29
+change.case$ -- 186
+chr.to.int$ -- 29
+cite$ -- 33
+duplicate$ -- 485
+empty$ -- 851
+format.name$ -- 304
+if$ -- 2762
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 30
+newline$ -- 99
+num.names$ -- 174
+pop$ -- 157
+preamble$ -- 1
+purify$ -- 184
+quote$ -- 0
+skip$ -- 441
+stack$ -- 0
+substring$ -- 689
+swap$ -- 82
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 310
+warning$ -- 4
+while$ -- 142
+width$ -- 0
+write$ -- 352
+(There were 4 warnings)

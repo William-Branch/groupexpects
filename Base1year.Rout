@@ -1,0 +1,240 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> library(tidyverse)
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.7
+✔ tidyr   1.1.4     ✔ stringr 1.4.0
+✔ readr   2.0.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Warning message:
+package ‘tibble’ was built under R version 4.1.2 
+> library(zoo)
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> library(gridExtra)
+
+Attaching package: ‘gridExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    combine
+
+> library(fredr) 
+> library(ggplot2)
+> library(bartik.weight)
+> library(fixest)
+Warning message:
+package ‘fixest’ was built under R version 4.1.2 
+> library(modelsummary)
+> library(kableExtra)
+
+Attaching package: ‘kableExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    group_rows
+
+Warning message:
+package ‘kableExtra’ was built under R version 4.1.2 
+> 
+> setwd("~/Temp/make-testr")
+> paneldata <-  read_csv("data/dataBuild/paneldata.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik, UNRATE, AggUNRATE, ye, gasExp, FinBet...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataSmall <-  read_csv("data/dataBuild/paneldataSmall.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik, UNRATE, AggUNRATE, ye, gasExp, FinBet...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataFirst <-  read_csv("data/dataBuild/paneldataFirst.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik, UNRATE, AggUNRATE, ye, gasExp, FinBet...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataState <-  read_csv("data/dataBuild/paneldataState.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik, UNRATE, AggUNRATE, ye, gasExp, FinBet...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> paneldataLag <-  read_csv("data/dataBuild/paneldataLag.csv") %>%
++   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
++   panel(~REGION + survey_date)
+Rows: 2124 Columns: 15
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (14): REGION, pe, RegInf, Bartik_lag, UNRATE, AggUNRATE, ye, gasExp, Fi...
+date  (1): survey_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> 
+> paneldata2 <- paneldata %>%
++   mutate(RegSample = case_when(REGION ==1 | REGION ==2 ~ 1, REGION ==3 | REGION ==4 ~ 0),
++          TimeSample = case_when(survey_date < as.Date("2000-02-01")~1,survey_date >= as.Date("2000-02-01")~2))
+> paneldataSmall2 <- paneldataSmall %>%
++   mutate(RegSample = case_when(REGION ==1 | REGION ==2 ~ 1, REGION ==3 | REGION ==4 ~ 0),
++          TimeSample = case_when(survey_date < as.Date("2000-02-01")~1,survey_date >= as.Date("2000-02-01")~2))
+> paneldataState2 <- paneldataState %>%
++   mutate(RegSample = case_when(REGION ==1 | REGION ==2 ~ 1, REGION ==3 | REGION ==4 ~ 0),
++          TimeSample = case_when(survey_date < as.Date("2000-02-01")~1,survey_date >= as.Date("2000-02-01")~2))
+> paneldataFirst2 <- paneldataFirst %>%
++   mutate(RegSample = case_when(REGION ==1 | REGION ==2 ~ 1, REGION ==3 | REGION ==4 ~ 0),
++          TimeSample = case_when(survey_date < as.Date("2000-02-01")~1,survey_date >= as.Date("2000-02-01")~2))
+> paneldataLag2 <- paneldataLag %>%
++   mutate(RegSample = case_when(REGION ==1 | REGION ==2 ~ 1, REGION ==3 | REGION ==4 ~ 0),
++          TimeSample = case_when(survey_date < as.Date("2000-02-01")~1,survey_date >= as.Date("2000-02-01")~2), Bartik = Bartik_lag)
+> estOLS <- feols(RegInf ~ pe+ l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter     , paneldata)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est0 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | csw0(REGION , yearquarter) | pe  ~ Bartik  , paneldata)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737). [This msg only concerns the variables common to all estimations.]
+> est1 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldata)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est2 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataSmall)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est3 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataFirst)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est4 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataState)
+NOTE: 697 observations removed because of NA values (LHS: 24, RHS: 697).
+> est5 <- feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik_lag  , paneldataLag)
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737, IV: 0/4).
+> 
+> dict0 <- c("yearquarter" = "TIME", "l(RegInf,1)" = "lag 1", "l(RegInf,2)" = "lag 2", "note1" = "*Notes:* Benchmark data results using the full survey data over 1978.01-2022.04.  Each model differs by fixed effects.")
+> dict1 <- c("yearquarter" = "TIME","model 1" = "benchmark", "model 2" = "lagged shares", "l(RegInf,1)" = "lag 1", "l(RegInf,2)" = "lag 2", "note1" = "*Notes:* Comparison between two different shift-share instruments over 1978.01-2022.04.  The lagged share instrument uses 12 month lag shares.")
+> etable( est0, vcov = "DK", dict = c("yearquarter" = "TIME","l(RegInf,1)" = "lag 1", "l(RegInf,2)" = "lag 2"), file = "tables/baseStage1.tex", title = "Benchmark regressions: first stage", stage =1, group = list(Controls = c("UNRATE", "UNEMPGood", "lag 1", "lag 2", "UNRATE", "UNEMPGood", "FinBetterLast1", "FinBetterNext1", "BizGood", "BizExGood", "RincUp","gasExp")))
+> etable( est0, vcov = "DK", dict = dict0, notes = "note1", file = "tables/baseStage2.tex", title = "Benchmark regressions: IV results", stage =2, group = list(Controls = c("UNRATE", "UNEMPGood", "lag 1", "lag 2", "UNRATE", "UNEMPGood", "FinBetterLast1", "FinBetterNext1", "BizGood", "BizExGood", "RincUp","gasExp")))
+> etable(est1, est5, vcov = "DK", dict = c("yearquarter" = "TIME","l(RegInf,1)" = "lag 1", "l(RegInf,2)" = "lag 2"), file = "tables/base1yearStage1.tex", title = "Comparison with lagged share instrument: first stage", stage =1, group = list(Controls = c("UNRATE", "UNEMPGood", "lag 1", "lag 2", "UNRATE", "UNEMPGood", "FinBetterLast1", "FinBetterNext1", "BizGood", "BizExGood", "RincUp","gasExp")))
+> etable(est1, est5, vcov = "DK", dict = dict1, notes = "note1", file = "tables/base1year.tex", title = "Comparison with lagged share instrument",  group = list(Controls = c("UNRATE", "UNEMPGood", "lag 1", "lag 2", "UNRATE", "UNEMPGood", "FinBetterLast1", "FinBetterNext1", "BizGood", "BizExGood", "RincUp","gasExp")))
+> etable(est2, est3, est4, vcov = "DK", notes = "*Notes:* Alternative data definitions.  Model 1 consists removes outlier survey expectations. Model 2 restricts to 1st time survey respondents. Model 3 computes regional inflation from state CPI.", dict = c("yearquarter" = "TIME","l(RegInf,1)" = "lag 1", "l(RegInf,2)" = "lag 2"), file = "tables/alt1year.tex", title = "Results with alternative data ",  group = list(Controls = c("UNRATE", "UNEMPGood", "lag 1", "lag 2", "UNRATE", "UNEMPGood", "FinBetterLast1", "FinBetterNext1", "BizGood", "BizExGood", "RincUp","gasExp")))
+> 
+> # Bias Correction
+> est6 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldata2, fsplit = ~TimeSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est7 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldata2, fsplit = ~RegSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est8 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataSmall2, fsplit = ~TimeSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est9 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataSmall2, fsplit = ~RegSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est10 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataState2, fsplit = ~TimeSample, vcov = "DK")
+NOTE: 697 observations removed because of NA values (LHS: 24, RHS: 697).
+> est11 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataState2, fsplit = ~RegSample, vcov = "DK")
+NOTE: 697 observations removed because of NA values (LHS: 24, RHS: 697).
+> est12 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataFirst2, fsplit = ~TimeSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est13 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataFirst2, fsplit = ~RegSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> est14 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataLag2, fsplit = ~TimeSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737, IV: 0/4).
+> est15 <-  feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataLag2, fsplit = ~RegSample, vcov = "DK")
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737, IV: 0/4).
+> 
+> c61 = coefficients(est6)
+> c71 = coefficients(est7)
+> s61= se( feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldata, vcov = "DK"))
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> adj1 = 3*c61[1]-(c61[2]+c61[3])/2-(c71[2]+c71[3])/2
+> 
+> c62 = coefficients(est8)
+> c72 = coefficients(est9)
+> s62= se( feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataSmall, vcov = "DK"))
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> adj2 = 3*c62[1]-(c62[2]+c62[3])/2-(c72[2]+c72[3])/2
+> 
+> c63 = coefficients(est10)
+> c73 = coefficients(est11)
+> s63= se( feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataState, vcov = "DK"))
+NOTE: 697 observations removed because of NA values (LHS: 24, RHS: 697).
+> adj3 = 3*c63[1]-(c63[2]+c63[3])/2-(c73[2]+c73[3])/2
+> 
+> c64 = coefficients(est12)
+> c74 = coefficients(est13)
+> s64= se( feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik  , paneldataFirst, vcov = "DK"))
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737).
+> adj4 = 3*c64[1]-(c64[2]+c64[3])/2-(c74[2]+c74[3])/2
+> 
+> c65 = coefficients(est14)
+> c75 = coefficients(est15)
+> s65= se( feols(RegInf ~  l(RegInf,1:2) + UNRATE + UNEMPGood +  FinBetterLast1+ RincUp+ FinBetterNext1+ BizGood+ BizExGood+ gasExp | REGION + yearquarter | pe  ~ Bartik_lag  , paneldataLag, vcov = "DK"))
+NOTE: 737 observations removed because of NA values (LHS: 252, RHS: 737, IV: 0/4).
+> adj5 = 3*c65[1]-(c65[2]+c65[3])/2-(c75[2]+c75[3])/2
+> 
+> 
+> adjT <- as.tibble(c(  round(adj1,4),  round(s61[1],4))) %>%
++   cbind(c( round(adj2,4), round(s62[1],4))) %>%
++   cbind(c( round(adj3,4), round(s63[1],4))) %>%
++   cbind(c( round(adj4,4), round(s64[1],4))) %>%
++   cbind(c(   round(adj5,4), round(s65[1],4))) 
+Warning message:
+`as.tibble()` was deprecated in tibble 2.0.0.
+Please use `as_tibble()` instead.
+The signature and semantics have changed, see `?as_tibble`.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated. 
+> 
+> colnames(adjT) <- c("full", "small", "state", "first", "lag")
+> rownames(adjT) <- c("coeff.", "se ")
+> kbl(adjT, "latex", booktabs = T, caption = "Bias Correction") %>%
++   kable_styling(latex_options = "striped") %>%
++   footnote(general = "Applies the split-sample jacknife bias correction. The column ``full'' is the complete survey data,``small'' removes outliers, ``first'' restricts to 1st time respondents. The remaining columns are state CPI inflation measures and the Bartik instrument with lagged shares." , threeparttable = T) %>%
++   save_kable("tables/biascorrections.tex")
+> 
+> 
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 15.026   1.512  16.394 
