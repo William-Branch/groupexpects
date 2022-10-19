@@ -11,7 +11,7 @@ library(fixest)
 library(modelsummary)
 library(tikzDevice)
 
-setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("~/Dropbox/Cloud/Research/panel expectations/groupexpects")
 paneldata <-  read_csv("data/dataBuild/paneldata.csv") %>%
   mutate(year = format(survey_date, "%Y"), yearquarter = as.yearqtr(survey_date, format = "%Y-%m-%d")) %>%
   panel(~REGION + survey_date)

@@ -14,7 +14,7 @@ library(zoo)
 library(kableExtra)
 library(tikzDevice)
 
-setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("~/Dropbox/Cloud/Research/panel expectations/groupexpects")
 fredr_set_key("1eb4018cc8ead6ac6445763becf7bf42")
 
 michigan <- read_csv("data/Michigan_220524.csv")

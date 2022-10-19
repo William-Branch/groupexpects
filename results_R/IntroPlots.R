@@ -14,10 +14,11 @@ library(modelsummary)
 library(ggstream)
 library(viridis)
 library(latex2exp)
+library(tikzDevice)
 
 
 
-setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("~/Dropbox/Cloud/Research/panel expectations/groupexpects")
 
 michigan <- read_csv("data/Michigan_220524.csv")
 region_data <- read_csv("data/dataBuild/regiondata.csv")

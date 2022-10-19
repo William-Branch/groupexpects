@@ -9,7 +9,7 @@ library(modelsummary)
 library(kableExtra)
 
 
-setwd("/Users/billbranch/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("/Users/billbranch/Dropbox/Cloud/Research/panel expectations/groupexpects")
 
 # Michigan survey data;
 

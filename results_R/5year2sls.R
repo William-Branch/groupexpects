@@ -12,7 +12,7 @@ library(fixest)
 library(kableExtra)
 
 
-setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("~/Dropbox/Cloud/Research/panel expectations/groupexpects")
 
 cps78 <- read_csv("data/cps_00002.csv")
 data_globalCPSw5 <- read_csv("data/dataBuild/globaldatawith5.csv")

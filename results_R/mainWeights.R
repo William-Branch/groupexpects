@@ -16,7 +16,7 @@ library(zoo)
 library(kableExtra)
 library(tikzDevice)
 
-setwd("~/Dropbox/Cloud/Research/panel expectations/make-panelexpects")
+setwd("~/Dropbox/Cloud/Research/panel expectations/groupexpects")
 master_data <- read_csv("data/dataBuild/masterdataSmall.csv") %>% filter(!is.na(REGION)) %>% filter(!is.na(pe)) %>% filter(!is.na(RegInf))
 data_local <- read_csv("data/dataBuild/localdataSmall.csv") %>% filter(!is.na(REGION))
 data_global <- read_csv("data/dataBuild/globaldataSmall.csv")
