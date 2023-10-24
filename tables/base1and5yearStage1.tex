@@ -1,6 +1,6 @@
 \begin{table}
 
-\caption{\label{tab:2sls:shortandlong:stage1}2SLS with short and long-expectations: first stage}
+\caption{\label{tab:table:2sls:shortlong:stage1}2SLS with short and long expectations: first stage}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{threeparttable}
@@ -12,9 +12,13 @@
 \addlinespace
  &  &  &  & \\
 \addlinespace
-\cellcolor{gray!6}{Bartik} & \cellcolor{gray!6}{0.2471*** (0.0618)} & \cellcolor{gray!6}{0.2536 (0.1640)} & \cellcolor{gray!6}{0.4419** (0.1425)} & \cellcolor{gray!6}{0.0550 (0.3573)}\\
+\cellcolor{gray!6}{Bartik\_bench\_out} & \cellcolor{gray!6}{0.2487*** (0.0607)} & \cellcolor{gray!6}{0.2299 (0.1660)} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
 \addlinespace
-Bartik5 & -0.0068 (0.0101) & -0.1707** (0.0555) & 0.0107 (0.0208) & -0.2662* (0.1275)\\
+Bartik5\_bench\_out & -0.0042 (0.0101) & -0.1703** (0.0554) &  & \\
+\addlinespace
+\cellcolor{gray!6}{Bartik} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{0.4422** (0.1423)} & \cellcolor{gray!6}{0.0549 (0.3573)}\\
+\addlinespace
+Bartik5 &  &  & 0.0108 (0.0209) & -0.2662* (0.1275)\\
 \addlinespace
 \cellcolor{gray!6}{Controls} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
 \addlinespace
@@ -24,20 +28,21 @@ Fixed-Effects: & ------------------ & ------------------ & ----------------- & -
 \addlinespace
 TIME & Yes & Yes & Yes & Yes\\
 \addlinespace
-\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\\
+\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\\
 \addlinespace
 S.E. type & Drisco.-Kra. (L=4) & Drisco.-Kra. (L=4) & Drisc.-Kra. (L=4) & Drisc.-Kra. (L=4)\\
 \addlinespace
 \cellcolor{gray!6}{Observations} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387}\\
 \addlinespace
-R2 & 0.80341 & 0.40238 & 0.80130 & 0.39883\\
+R2 & 0.80356 & 0.40225 & 0.80139 & 0.39883\\
 \addlinespace
-\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.13685} & \cellcolor{gray!6}{0.04069} & \cellcolor{gray!6}{0.12761} & \cellcolor{gray!6}{0.03499}\\
+\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.13753} & \cellcolor{gray!6}{0.04049} & \cellcolor{gray!6}{0.12800} & \cellcolor{gray!6}{0.03500}\\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
 \item \textit{Note: } 
-\item Survey is the benchmark shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
+\item Reports first stage from a panel regression with instruments for short and long expectations. Survey is the shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
+\item[1] Signif. codes: * = .05; ** = .01; *** = .001.
 \end{tablenotes}
 \end{threeparttable}}
 \end{table}

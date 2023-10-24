@@ -50,7 +50,7 @@
 
 
 \title{\vspace{-1 in} Identifying the Impact of Inflation Expectations}
-\author{William A. Branch\thanks{Complete replication and robustness files available at https://github.com/William-Branch/groupexpects.} \\
+\author{William A. Branch\thanks{Complete replication and robustness files available at https://github.com/William-Branch/groupexpects. I am grateful for comments and suggestions from Mary Burke, Michael Weber, Chris Gibbs, Yuriy Gorodnichenko, Stefan Nagel, Ivan Werning, Jang-Ting Guo, Mari Tanaka, and seminar participants at U.C. Riverside and the 2023 Workshop on Expectations in Dynamic Macro Models/Barcelona Summer Workshop. } \\
 University of California, Irvine }
 \date{\today}
 \maketitle
@@ -58,7 +58,7 @@ University of California, Irvine }
 
 \begin{abstract}
 
-People experience inflation differently, and those varied experiences lead to heterogeneous expectations across demographic groups and regions. Exploiting cross-sectional variation leads to estimates of the impact of inflation expectations on inflation using survey expectations from the Michigan Survey of Consumers and its rich demographic data. The identifying assumption is that demographic groups have heterogeneous consumption baskets and their inflation expectations reflect their varied exposure to sectoral price changes. A shift-share instrument interacts the national survey expectations by a group with each group's share of a region's population. A one percent increase in expected inflation will lead to a 60 basis point increase in (regional) inflation. The effect of long-run inflation expectations (e.g., over a 5-10 year horizon) has an economically and statistically insignificant impact on inflation rates. The critical identifying variation comes from younger, married consumers with at least a high school degree. Inflation expectations most strongly impact non-durable goods prices.
+Individuals form inflation expectations differently based on their demographics and locations.  Consequently, different demographic groups respond differently to sectoral price changes, a fact that we exploit to identify the inflationary impact of expectations.  Our instrument combines national expectations of specific groups with these groups' share in regional populations.  We find that a one-percentage-point rise in the expected rate of inflation increases (regional) inflation by 60 basis points.  Interestingly, long-run expectations -- say, over 5 to 10 years -- don't seem to matter much.  The estimates are most robust for a particular demographic: younger, married individuals holding at least a high school diploma.  Their expectations mainly influence the prices of non-durable goods.
 \end{abstract}
 
 \textbf{JEL Classification: D82; D83; E40; E50}\\
@@ -67,9 +67,9 @@ People experience inflation differently, and those varied experiences lead to he
 
 \section{Introduction}
 
-How do subjective inflation expectations impact inflation rates? Macroeconomic models suggest a significant role forward-looking inflation expectations play in the economic decisions of households, firms, and policymakers. In part, households base consumption demand, labor supply, and asset portfolio allocations on their subjective beliefs about the future path of prices. Similarly, firms incorporate their forecasts of inflation when setting prices and wages. Central bankers often describe the ``anchoring'' of expectations as essential for implementing sound monetary policy.  
+How do subjective inflation expectations impact inflation rates? When people expect prices to rise, they act in ways that make prices rise. Businesses set higher prices in anticipation of higher costs, workers demand higher wages, and consumers buy now rather than later.  However, it is still an open question just how big a role inflation expectations play in driving inflation.
 
-However, it is unsettled whether it is possible to empirically identify that higher subjective inflation expectations lead to a higher inflation rate. One way to assess this relationship is to explore the correlation between inflation rates and survey measures of inflation expectations. Since 1978, the University of Michigan Survey of Consumers has elicited monthly inflation expectations from a nationally representative sample of households. There is a strong and positive correlation between survey expectations of twelve-month ahead inflation and the U.S. inflation rate. However, after including controls, the relationship substantially weakens. Figure \ref{fig:intro:corrs} documents the empirical relationship between consumer price index (CPI) annual inflation and twelve-month ahead inflation expectations from the Michigan survey. Figure \ref{subfig:intro:us} plots the relationship between aggregate inflation and mean expectations after controlling for the aggregate unemployment rate and four lags of inflation. Figure \ref{subfig:intro:reg} estimates a panel model relating Census regional inflation to mean regional expectations after controlling for regional unemployment rates, lagged inflation, and region/time fixed effects. While the unconditional correlation between inflation and inflation expectations is nearly one-for-one, controlling for other factors produces a significant effect that is substantially weaker. The slope of the regression line is 0.18 and 0.069 in figures \ref{subfig:intro:us}-\ref{subfig:intro:reg}, respectively.\begin{figure}
+One way to gauge the tie between expected and actual inflation is to measure the correlation between inflation rates and survey measures of inflation expectations. Since 1978, the University of Michigan Survey of Consumers has been eliciting monthly inflation expectations from a nationally representative sample of households. There is a tight positive correlation between survey expectations of twelve-month ahead inflation and the U.S. inflation rate. However, after including controls, the relationship substantially weakens. Figure \ref{fig:intro:corrs} shows the year-over-year changes in the consumer price index (CPI) alongside what the survey predicted. Figure \ref{subfig:intro:us} plots the relationship between aggregate inflation and mean expectations after controlling for the aggregate unemployment rate and four lags of inflation. Figure \ref{subfig:intro:reg} estimates a panel model relating Census regional inflation to mean regional expectations after controlling for regional unemployment rates, lagged inflation, and region/time fixed effects. While the unconditional correlation between inflation and inflation expectations is nearly one-for-one, controlling for other factors produces a substantially weaker effect. The slope of the regression line is 0.18 and 0.069 in figures \ref{subfig:intro:us}-\ref{subfig:intro:reg}, respectively.\begin{figure}
 \centering
 \caption{Inflation and inflation expectations}\label{fig:intro:corrs}
 \begin{subfigure}[t]{0.45\textwidth}
@@ -85,39 +85,37 @@ However, it is unsettled whether it is possible to empirically identify that hig
 \end{subfigure}
 \end{figure}
 
-An economic interpretation of the regression results in Figure \ref{fig:intro:corrs} is difficult because economic theory predicts that inflation expectations are endogenous. The rational expectations hypothesis holds that expectations are functions of the same state variables in the data-generating process, and forecast errors are unpredictable. Many models of non-rational beliefs predict that expectations will move, partly, with the shocks driving inflation even if beliefs are biased and forecast errors predictable (\cite{SophoclesJME}). The standard approach to estimating the impact of expectations is to estimate a New Keynesian Phillips Curve with an appropriate instrument for expectations. Convincing evidence, though, is elusive for various economic and econometric reasons. First, model derivations of the Phillips curve typically assume rational expectations, a strong assumption. Even when researchers are willing to relax rational expectations, finding an appropriate instrument requires some assumptions about the expectation formation process. Second, well-known identification and weak-instrument problems hinder inference (\cite{Stocketal:JEL2014}).
+An economic interpretation of the regression results in Figure \ref{fig:intro:corrs} is difficult because economic theory predicts that inflation expectations are endogenous. The rational expectations hypothesis holds that expectations are functions of the same state variables as the data-generating process, and forecast errors are unpredictable. Models of non-rational beliefs predict that expectations will move, partly, with the shocks driving inflation even if beliefs are biased and forecast errors predictable (\cite{SophoclesJME}). 
 
-One limitation of empirical approaches that use aggregate data is that the estimates cannot capture dimensions of heterogeneity that are important for setting prices across markets. For example, there is evidence of different sectoral degrees of price stickiness and monetary policy effectiveness (\cite{Cravinoetal:JME2020, Boivinetal:AER2009, Almas:AER2012}). Households with different preferences for goods from specific sectors produce differentiated market baskets and expectations (\cite{AngelicoGiacomo:WP}). Households experience inflation differently depending on their market baskets and varied prices for the same goods (\cite{KaplanWohl:JME2017}, \cite{HobijnLagakos:2005}). Expectations seem to be heavily influenced by the prices observed by the consumer's market basket, for instance, grocery store prices (\cite{Dacunto:groceryJPE, AngelicoGiacomo:WP}). Evidence shows that households, notably different demographic groups, have distinct consumption baskets and expectations about future inflation (\cite{BryanVenkatu, Dacunto:PNAS, deBruinetal:2010, DasKahnenNagel:2020}). Firms' inflation expectations also reflect their exposure to sector-specific prices (\cite{Andradeetal:JME2021}). This paper exploits the rich micro-data of the University of Michigan Survey of Consumers to construct an extended panel of inflationary expectations across demographic groups and geographic regions to identify, in the cross-section, the impact of inflation expectations on inflation rates.
+The standard empirical strategy to disentangle the causal effects of expectations employs the New Keynesian Phillips Curve, instrumenting for inflation expectations.  Yet, this approach faces limitations.  First, most derivations of the Phillips curve intrinsically depend on rational expectations, a strong theoretical and empirically contestable assumption.  Second, identification challenges, coupled with the weak instrument problem, pose additional hurdles to econometric inference (\cite{Stocketal:JEL2014}). 
 
-A simple model of firm pricing motivates the empirical approach. The model assumes that different households have group-specific preferences over baskets of differentiated goods. There are a variety of sectors, each consisting of monopolistically competitive firms. Prices are sticky as in \cite{Calvo:JMoE1983} and \cite{WoodfordBook}. In each period, with some probability, a firm can reset its price. The Calvo updating probability, though, differs by sector. The model implies that each group of households may have a different inflation expectation depending on their market basket and that overall inflation is a weighted average of group-based expectations. The analysis in the paper does not make any explicit assumption about how consumers formulate their forecasts.
+Estimates derived from aggregate data may not capture dimensions of cross-sectional heterogeneity that are important in price-setting.  For example, there is evidence that the extent of price stickiness varies across sectors (\cite{Cravinoetal:JME2020, Boivinetal:AER2009, Almas:AER2012}).  Households experience inflation differently depending on their market baskets and varied prices for the same goods (\cite{KaplanWohl:JME2017}, \cite{HobijnLagakos:2005}).  Differentiated market baskets lead to heterogeneity in inflation expectations (\cite{AngelicoGiacomo:WP}).  Expectations are heavily influenced by the prices in a consumer's market basket, for instance, grocery store prices \cite{Dacunto:groceryJPE, AngelicoGiacomo:WP}).  Different demographic groups have distinct market baskets and inflation expectations (\cite{BryanVenkatu, Dacunto:PNAS, deBruinetal:2010, DasKahnenNagel:2020}). Similarly, firms' inflation expectations also reflect their exposure to sector-specific prices (\cite{Andradeetal:JME2021}).  Using the University of Michigan Survey of Consumers' micro-data, this paper creates an extended panel to examine how inflation expectations across demographics and regions influence inflation rates.
 
-This paper focuses on identifying the impact of inflation expectations on (regional) inflation rates. The identifying assumption is that demographic groups have heterogeneous consumption baskets and their inflation expectations reflect their varied exposure to sectoral price changes. The empirical strategy is a differential exposure quasi-experimental design. Given the cross-regional and cross-group variation in inflation expectations, a natural instrument for inflation expectations is a shift-share instrument (``Bartik instrument''), as in \cite{Bartik:1991}, \cite{BlanchardKatz},\cite{Almas:AER2012}, and \cite{Pinkhametal:AER2020}. Constructing the instrument involves interacting the aggregate survey expectations at the group level with the group's share of each region's population. The assumption is that the demographic characteristics within each region are exogenous to the unobserved factors driving regional inflation. While demographic groups may sort endogenously into regions based on the regional price levels (a cost of living measure), this does not harm identification. The key is that the demographic shares are uncorrelated with unobserved components of the price level change, i.e., inflation. It turns out that these group shares are uncorrelated with the non-expectations factors that predict inflation.  
+A simple model of firm pricing motivates the empirical approach.  In this model, households are not all the same: they prefer different baskets of goods, and these goods come from various sectors.  Within each sector, firms are monopolistic competitors and can only change their prices occasionally, as in \cite{Calvo:JMoE1983} and \cite{WoodfordBook}.  Now, the frequency a firm gets to change its price is not the same across all sectors.
 
-The empirical results find that inflation expectations positively impact the regional inflation rate. This result is robust across controls for unobservable factors, identification assumptions, data refinements, and observable covariates. The best estimate finds a more substantial impact than seen in Figure \ref{fig:intro:corrs}, but still a less than one-for-one pass-through from expectations to inflation outcomes. A one percent increase in a region's inflation expectation will lead to a 60 basis point increase in that region's inflation rate.  
+What comes out of this setup?  Three main points.  First, because households have their own preferred baskets of goods they are going to have different expectations about where inflation is heading.  Second, we observe household expectations as a weighted average of sector-specific inflation expectations.  Third, aggregate inflation turns out to be an average of these different group expectations.  For this analysis we are not making specific assumptions about how exactly people form these expectations.  The identifying assumption is that group expectations reflect the underlying expected sectoral inflation rates.
 
-The empirical estimates cannot account for spatial spillovers from shocks to expectations across regions. Cross-regional estimates identify the inflationary response to expectations shocks, while the time-fixed effects absorb aggregate general equilibrium impacts. The estimates are, nonetheless, informative. The estimates presented here are a lower bound on the impact of consumer inflation expectations on aggregate inflation rates. In Figure \ref{fig:intro:corrs}, the correlation between expectations and inflation is stronger in the aggregate. It is reasonable to expect a stronger aggregate pass-through effect, in line with theoretical results in \cite{Werning:expectsWP}.
+The core focus of this paper is the investigation of how inflation expectations influence inflation rates. Our identification leverages the heterogeneous consumption baskets across demographic groups, which in turn shapes their distinct inflation expectations. Utilizing a differential exposure quasi-experimental design, we employ a shift-share instrument (``Bartik-style instrument''), as in \cite{Bartik:1991}, \cite{BlanchardKatz},\cite{Almas:AER2012}, and \cite{Pinkhametal:AER2020}. This instrument is an interaction between group-level aggregate survey expectations and the respective group's regional population share. The crucial assumption is the demographic composition within regions is orthogonal to unobservable inflationary factors. Though demographics may sort based on regional price levels, it poses no threat to our identification. 
 
-Moreover, cross-sectional analysis helps to understand which groups' expectations drive inflation in which sector. The estimates indicate that younger consumers with at least a high school education are the salient group. Inflation expectations impact non-durable prices most strongly. These results are helpful for better understanding monetary policy transmission and provide informative moments for macroeconomic models with heterogeneous agents.
+Our empirical results present credible evidence: inflation expectations do indeed elevate regional inflation rates. This insight remains robust under multiple controls and variations in the data and methodology. Contrary to Figure \ref{fig:intro:corrs}, the data reveal a strong, but still less than one-for-one,  pass-through from expectations to inflation; specifically, a one percent uptick in expected inflation results in a 60 basis point rise in actual regional inflation.
 
-The empirical framework can also answer whether short-run or long-run inflation expectations are more important for price stability. The Michigan survey includes household inflation expectations over a 5-10 year horizon. An extension to the primary results includes a shift-share instrument for long-horizon expectations. After including time-fixed effects, only the one-year-ahead expectations have a significant effect on inflation. Time-fixed effects in this setting capture aggregate effects. So, after controlling for macroeconomic factors, long-horizon expectations have no independent role in the inflation rate.
+In an extension to assess long-term inflation expectations—those spanning a 5 to 10-year horizon—the data indicate a significant effect from short-term forecasts but negligible impact from long-term expectations. This finding challenges prevailing monetary policy wisdom, which often emphasizes the role of anchored long-term expectations in maintaining price stability. According to the evidence presented here, the anchoring of expectations appears to be chiefly relevant when short-term expectations are volatile.
 
-There have been several studies that point to shortcomings of the Michigan survey.\footnote{See \cite{JELexpects} for an extended discussion.}. First is a long-standing concern about whether surveys can elicit real expectations. Second, the Michigan survey features a rotating panel with a subset of respondents re-interviewing six months later for a second time, which can create selection issues (\cite{BinderKim:AEJM2021}). Third, survey non-response rates are increasing, making it more difficult to capture a nationally representative sample. Fourth, the Michigan survey prompts respondents who report ``unreasonable'' expectations, and the threshold for the prompt is endogenous to inflation history. Fifth, the wording of the survey asks about changes in prices rather than aggregate U.S. inflation.
+While the empirical framework employed does not account for spatial spillovers in expectations shocks across regions, it nonetheless is informative. Specifically, cross-regional analyses identify the inflationary response to changes in expectations, with time-fixed effects capturing general equilibrium phenomena. The results should be interpreted as providing a lower bound on the influence of consumer expectations on overall inflation rates. Utilizing a common effects methodology, as in \cite{Pesaran:2006} and \cite{HardingLamarche:EL}, we disentangle the contributions of regional and national inflation expectations to observed inflation. Notably, aggregate expectations exert an influence approximately 2.5 times stronger than their regional counterparts. Applying this multiplier to our favored pass-through estimate suggests an aggregate pass-through coefficient of 1.5,  aligning closely with the theoretical findings in \cite{Werning:expectsWP}.
 
-The first four issues are all addressed in the paper with alternative estimates. Estimates are presented with first-time-only respondents, removing outliers, calculating the shift-share instrument using group shares in the Michigan survey and the Census' Current Population Survey. The question about wording is a feature of the empirical strategy implemented here. The identifying assumption is that consumer inflation expectations reflect the changes in prices from their market baskets. The estimates provided represent the impact of consumer inflation expectations under the assumption that inflation expectations reflect a weighted average of sectoral inflation rates.
+Our analysis further reveals that inflation expectations of married, younger consumers, with a minimum of a high school education, predominantly drive inflation, most notably in the non-durable goods sector. These findings not only enrich our understanding of the transmission channels for monetary policy but also contribute valuable moments for the calibration of heterogeneous-agent macroeconomic models.
 
-The paper proceeds as follows. Section 2 describes the variation in the data on inflation expectations that is key for identification. Then, Section 3 presents the empirical model and the identification strategy. Sections 4 and 5 detail the estimates.
+Critics have raised several concerns about the University of Michigan Survey. These reservations include the survey's ability to capture genuine expectations, its rotating panel structure that might introduce selection bias (\cite{BinderKim:AEJM2021}), rising non-response rates, and the inflation-history-dependent prompting of 'unreasonable' expectations by respondents. Furthermore, the survey's focus on price changes rather than aggregate U.S. inflation is seen as a limitation (\cite{JELexpects}). This paper addresses the first four concerns by providing robustness checks, such as utilizing only first-time respondents and different calculations of the shift-share instrument. The fifth issue is inherent to our empirical strategy, which assumes that respondents' inflation expectations mirror the anticipated changes in their specific consumption baskets.
+
+The remainder of this paper is organized as follows: Section 2 examines the variation in inflation expectations data crucial for our identification strategy. Section 3 articulates the empirical model and outlines the identification approach, while Sections 4 and 5 provide the empirical results.
 
 \subsection{Related literature}
 
-The empirical framework here follows and complements research into household-level heterogeneity in consumption baskets and inflation rates. \cite{HobijnLagakos:2005} use Consumer Expenditure Survey data to estimate household-specific consumption baskets and exploit the cross-sectional heterogeneity to construct household-level inflation rates. Similarly, \cite{KaplanWohl:JME2017} employs scanner data from the Kilts-Nielsen Consumer Panel to construct household-level inflation rates. While \cite{HobijnLagakos:2005} find evidence that households consume different mixtures of certain goods like education, medical services, and energy, \cite{KaplanWohl:JME2017} find for a broad range of non-durable goods that two-thirds of the cross-household variation in inflation rates comes from paying different prices for the same good and one-third from the bundle mix within categories of goods. \cite{KaplanWohl:JME2017} estimate a connection between the changes in prices faced by a household and their aggregate inflation expectations. They merge data on quantities and prices of non-durable goods from a subset of the Kilts-Nielsen Consumer Panel with survey expectations from the entire panel. Variation in grocery store prices for goods that individuals most often purchase impacts their expectations of inflation.
+Using cross-sectional survey data, this paper provides credible evidence that inflation expectations impact realized inflation rates.  An extensive literature seeks to measure the pass-through using aggregate data and New Keynesian Phillips Curve estimates.  This literature, and its drawbacks, is extensively surveyed in \cite{Stocketal:JEL2014}.  Our outcome measure is realized (regional) inflation, as this is of substantial interest to economists and policymakers.  A literature focuses on other outcomes, presumably correlated with our outcome of interest.  \cite{Dacunto:groceryJPE} find that households with inflation expectations tend to influence portfolio allocation decisions. \cite{BachmannBergSims:AEJ2015} use Michigan survey data to assess the connection between household readiness to spend and inflation expectations. \cite{BurkeOzdagli:2022WP} use survey data to provide evidence linking spending on durable goods with inflation expectations during the ZLB period in the U.S.. \cite{CrumpEusepi:2021} use responses to the New York Fed Survey of Consumer Expectations to estimate the intertemporal elasticity of substitution between expected consumption growth and the expected real interest rate. \cite{TanakaBloom:JME2020} identifies a connection between firm managers' GDP forecasts and business decisions.  \cite{Armantieretal:IER2015} find consistency between survey expectations and a financially incentivized experiment. \cite{KuchlerPiazzesiStroebel:2022} review research that finds a connection between home price expectations and individual market behavior.  
 
-On the other hand, this paper focuses on inflationary outcomes, taking the previous findings as the basis for the critical identifying assumption that expectations reflect the prices in a consumer's consumption basket. Those prices could reflect different bundles of goods as in \cite{HobijnLagakos:2005}, cross-store heterogeneity in prices for the same goods or mixes of quantities of closely related goods as in \cite{KaplanWohl:JME2017}, or attention to frequently purchased grocery goods as in \cite{Dacunto:groceryJPE}. The assumption here is that those prices faced by households differ by demographic groups, and exploiting the cross-sectional variation identifies the impact of expectations on actual inflation outcomes.
+Our empirical approach extends the existing literature that investigates household-level heterogeneity in consumption baskets and inflation rates. In particular, our study is closely aligned with \cite{HobijnLagakos:2005}  and \cite{KaplanWohl:JME2017}, who used Consumer Expenditure Survey data and Kilts-Nielsen Consumer Panel data, respectively, to estimate household-level consumption baskets and inflation rates. While \cite{HobijnLagakos:2005}  contribute by highlighting that households consume different bundles of goods—focusing primarily on education, medical services, and energy—\cite{KaplanWohl:JME2017} delve into the price differences for the same goods across stores. Methodologically, our paper differs by employing an instrumental variable that combines national expectations of specific groups with these groups' share in regional populations, thereby providing estimates of the pass-through effect. Further, like \cite{KaplanWohl:JME2017}, who consider non-durable goods, our study finds that inflation expectations predominantly impact non-durable goods among a particular demographic: younger, married individuals holding at least a high school diploma.
 
-The results here also relate to the literature examining expectations' economic role. \cite{Dacunto:groceryJPE} find that households with inflation expectations tend to influence portfolio allocation decisions. \cite{BachmannBergSims:AEJ2015} use Michigan survey data to assess the connection between household readiness to spend and inflation expectations. \cite{BurkeOzdagli:2022WP} use survey data to provide evidence linking spending on durable goods with inflation expectations during the ZLB period in the U.S.. \cite{CrumpEusepi:2021} use responses to the New York Fed Survey of Consumer Expectations to estimate the intertemporal elasticity of substitution between expected consumption growth and the expected real interest rate. \cite{TanakaBloom:JME2020} identifies a connection between firm managers' GDP forecasts and business decisions.  \cite{Armantieretal:IER2015} find consistency between survey expectations and a financially incentivized experiment. \cite{KuchlerPiazzesiStroebel:2022} review research that finds a connection between home price expectations and individual market behavior.  
-
-The focus of the results here is the impact of subjective inflation expectations on inflation rather than the determinants of inflation expectations. Besides the papers mentioned above, there is a venerable history documenting failures of rational expectations and evidence for boundedly rational expectations in survey data. For example, \cite{EvansGulamani:OBES1984} develops tests for unbiasedness, efficiency, and serially uncorrelated forecast errors in survey inflation expectations. \cite{Carroll:QJE2003} similarly rejects rational expectations in the Survey of Professional Forecasters. \cite{BranchEJ2004} and \cite{Branch:JEDC2007} estimate models where survey respondents are distributed across rational expectations and various alternative adaptive learning rules. They find time-varying degrees of heterogeneity in the Michigan survey. \cite{CoibionGorodnichenko:AER2015} and \cite{CoibionGorodnichenko:JPE2012} find evidence for models of inattention in expectation formation.  
-
-
+The focus of the results here is inflationary impact of subjective inflation expectations rather than the determinants of inflation expectations. There is a venerable history documenting failures of rational expectations and evidence for boundedly rational expectations in survey data. For example, \cite{EvansGulamani:OBES1984} develops tests for unbiasedness, efficiency, and serially uncorrelated forecast errors in survey inflation expectations. \cite{Carroll:QJE2003} similarly rejects rational expectations in the Survey of Professional Forecasters. \cite{BranchEJ2004} and \cite{Branch:JEDC2007} estimate models where survey respondents are distributed across rational expectations and various alternative adaptive learning rules. They find time-varying degrees of heterogeneity in the Michigan survey. \cite{CoibionGorodnichenko:AER2015} and \cite{CoibionGorodnichenko:JPE2012} find evidence for models of inattention in expectation formation.  
 
 \section{Data}
 
@@ -142,11 +140,11 @@ The identifying assumption in this paper is that different social and demographi
 
 \begin{figure}
 \centering
-\caption{Group mean price expectations. Groups: men $\leq 80$, women $>80$}\label{fig:GroupMeans}
+\caption{Group mean price expectations. Groups: men $\leq 80$, women $>80$. Each marker is particular group's sample average inflation expectations.  There is evident expectational heterogeneity across groups.}\label{fig:GroupMeans}
 \input{figs/tex/group_means}
 \end{figure}
 
-Figure \ref{fig:GroupMeans} provides the first snapshot of the variation exploited by the quasi-experimental design. Each point represents a particular demographic group's mean inflation expectations, averaged across regions and time. Groups below 80 are men, and above are women. Each age group and education level has its color and shape, and women's higher average inflation expectations are apparent. The figure also illustrates heterogeneity across age and schooling.
+Figure \ref{fig:GroupMeans} provides the first snapshot of the variation exploited by the quasi-experimental design. Each point represents a particular demographic group's mean inflation expectations, averaged across regions and time. Groups below 80 are men, and above are women. Each age group and education level has its color and shape, and women's higher average inflation expectations are apparent. Markers are large to represent those groups with children. The figure also illustrates heterogeneity across age and schooling.
 
 There is substantial variation in inflation expectations across time, geographic regions, and demographic groups. Figure \ref{fig:intro} documents the gender variation in the Michigan survey data. The panel illustrates the notable difference in inflation expectations by men and women (\cite{BryanVenkatu}). Outside of the high inflation during the 1970s and subsequent disinflation, women tend to expect higher inflation rates. Panel (b) plots the contribution of each region to an unweighted average inflation expectation, with periods of significant disparity.  
 
@@ -154,19 +152,19 @@ There is substantial variation in inflation expectations across time, geographic
 
 \begin{figure}
 \centering
-\caption{Diversity of inflation survey expectations: gender \& regions.}\label{fig:intro}
+\caption{Diversity of inflation survey expectations: gender \& regions. }\label{fig:intro}
 \begin{subfigure}[t]{ 0.75\textwidth}
 \centering
 %\includegraphics[width = 3in, height =2in]{figs/menwomen}
 \input{figs/tex/menwomen}
-\caption{Inflation expectations: men/women}
+\caption{Inflation expectations $p^e$: men/women}
 \end{subfigure}
 \vfill
 \begin{subfigure}[t]{0.75\textwidth}
 \centering
 \input{figs/tex/regions}
 %\includegraphics[width =3in, height =2in]{figs/regions}
-\caption{Inflation: U.S. regions}\label{fig:intro:RegInf}
+\caption{Inflation expectations $p^e$: U.S. regions}\label{fig:intro:RegInf}
 \end{subfigure}
 \end{figure}
 
@@ -175,14 +173,14 @@ There is substantial variation in inflation expectations across time, geographic
 \caption{Diversity of inflation survey expectations: by groups}\label{fig:intro2}
 \begin{subfigure}[t]{0.75\textwidth}
 %\centering
-\includegraphics[width = 6.5in, height =3in]{figs/aggIndComp}
-\caption{Inflation expectations: all groups. Height = sum of expect.'s.}\label{fig:groupExpects}
+\includegraphics[width = 5in, height =3in]{figs/aggIndComp}
+\caption{Inflation expectations $p^e$: all groups. Height = sum of expect.'s.}\label{fig:groupExpects}
 \end{subfigure}
 \vfill
 \begin{subfigure}[t]{0.75\textwidth}
 %\centering
-\includegraphics[width = 6.5in, height =3in]{figs/weightsTop10comp}
-\caption{Inflation expectations: key groups.}\label{fig:top10Expects}
+\includegraphics[width = 5in, height =3in]{figs/weightsTop10comp}
+\caption{Inflation expectations $p^e$: key groups (unweighted avg.).}\label{fig:top10Expects}
 \end{subfigure}
 \end{figure}
 
@@ -242,6 +240,27 @@ In conclusion,
 \item The empirical strategy exploits cross-sectional variation in sectoral demand to identify the effect inflation expectations have on prices.
 \end{itemize}
 
+\subsection{Mark ups and demographics}\label{subsec:markups}
+
+The motivating model introduces consumption heterogeneity via idiosyncratic preference shocks, with expectations identified through the cross-group heterogeneity in consumption baskets. However, one potential issue that could challenge the exclusion restriction arises if different groups pay varied prices for identical goods. This disparity could occur if firms account for the different willingness to pay across diverse groups. In such a case, regional variations in mark-ups, as well as pass-through, might become endogenous to the group distribution.
+
+Consider the following extension to \cite{AndersonRebeloWong:WP}. There exist $s=1,\ldots,S$ sectors, $g=1,\ldots,G$ groups, and a continuum $\left[0,n\right]$ of retail firms within each sector. While each firm sells the identical good, they offer a range of amenities (e.g., ease of parking, self-checkout), resulting in imperfect substitution among the firms' sectoral products. Let's denote $C_{s,g,t}$ as group $g$'s consumption of sector $s$'s goods, formulated as:
+\begin{equation}
+C_{s,g,t} = v_g^{\gamma}\left[\int_0^n x_{sigt}^{1/v_g}di\right]^{v_g}
+\end{equation}
+The elasticity of substitution across firms becomes:
+\begin{equation}
+-\frac{v_g}{1-v_g}
+\end{equation}
+
+A household of type $g$, in sector $s$, will face prices calculated as:
+\begin{equation}
+P_{sigt} = v^{\gamma/v_g}_gP_tC_{gt}^{v_g-1/v_g}x_{sigt}^{1-v_g/v_g}
+\end{equation}
+Consequently, the optimal price will have a constant mark-up $v_g$ above the marginal cost. Therefore, with group-specific elasticities of substitution across goods, it is conceivable that mark-ups and expectation pass-through could correlate with the distribution of groups across regions.
+
+This concern, however, doesn't necessarily violate the exclusion restriction. The crucial point is that the group shares must not correlate with the inflation rate, rather than the price levels. An acyclical, or mostly time-invariant mark-up, would not pose an identification problem, as shown by \cite{AndersonRebeloWong:WP}. Nevertheless, we investigate this possibility in the data and find that mark-ups do not significantly correlate with group shares.
+
 \subsection{Empirical model}
 
 The object of interest is inflation expectations' impact on regional inflation rates. Expectations are endogenous. The identifying assumption is that demographic groups may have distinct preferences for the goods that make up a consumption basket. Their inflation expectations reflect the mix of prices in their basket. Interacting regional group shares with aggregate group inflation expectations instruments for the endogenous expectations. The empirical strategy is a differential exposure design: we identify the impact of expectations by measuring how a region's exposure to aggregate shocks leads to a differentiated inflation response. Each region has differential exposure to the shocks because of different population distributions. The identification strategy is valid so long as the demographic shares satisfy a relevance and an exogeneity condition.
@@ -266,7 +285,7 @@ Assuming that $\omega_{R,g,t}$ satisfies strict exogeneity and relevance, then t
 \end{eqnarray}
 The vector of exogenous regressors now includes region and time-fixed effects.
 
-The main potential concern which threatens identification is whether group shares predict regional inflation rates through channels other than those posited by the researcher. Here, the channel is different group preferences, and the distribution of groups impacts the level and rate of price changes. That is, the channel is through demand. A reasonable conjecture is that the distribution of groups is endogenous to a region's price level, a cost-of-living measure. However, for identification, it is sufficient that the group shares in a region are exogenous to the change in prices, i.e., inflation (\cite{Pinkhametal:AER2020}). This exogeneity assumption is plausible. However, to make the case convincing, the empirical analysis measures shares using either the beginning of sample population distribution or time-varying survey shares. In the former, those shares are not predictive of the exogenous covariates.
+The main potential concern which threatens identification is whether group shares predict regional inflation rates through channels other than those posited here. The proposed channel is different group preferences, and the distribution of groups impacts the level and rate of price changes. That is, the channel is through demand. A reasonable conjecture is that the distribution of groups is endogenous to a region's price level, a cost-of-living measure. However, for identification, it is sufficient that the group shares in a region are exogenous to the change in prices, i.e., inflation (\cite{Pinkhametal:AER2020}). This exogeneity assumption is plausible. However, to make the case convincing, the empirical analysis measures shares using either the beginning of sample population distribution or time-varying survey shares. In the former, those shares are not predictive of the exogenous covariates.
 
 Using the beginning of period shares, and probing the predictive power of those shares, helps allay concerns over whether regional demographics are endogenous to the inflation rate. One plausible story could be that younger and more educated groups tend to live in regions with more dynamic or concentrated industries that experience increasing rates of price changes. In that case, those beginning-of-period shares would help predict the other variables that also predict inflation.  
 
@@ -288,14 +307,14 @@ The second measure uses shares calculated directly from the Michigan survey. Sin
 \centering
 %\includegraphics[width = 5in, height =3in]{figs/weightsDiverse}
 \input{figs/tex/weightsDiverse}
-\caption{Michigan survey shares. Each box plots a given group $g$'s sample share, averaged across all dates $t$, for all 4 Census regions $R$.}\label{subfig:shares:group}
+\caption{Michigan survey shares. Each box plots a given group $g$'s sample share ($\%$), averaged across all dates $t$, for all 4 Census regions $R$.}\label{subfig:shares:group}
 \end{subfigure}
 \quad
 \begin{subfigure}[t]{\textwidth}
 \centering
 %\includegraphics[width =5in, height =3in]{figs/weightsCPS78}
 \input{figs/tex/weightsCPS78}
-\caption{CPS population shares (January 1978). Each box plots a given group $g$'s population share according to the January 1978 CPS across all 4 Census regions $R$.}\label{subfig:shares:cps}
+\caption{CPS population shares (January 1978). Each box plots a given group $g$'s population share ($\%$) according to the January 1978 CPS across all 4 Census regions $R$.}\label{subfig:shares:cps}
 \end{subfigure}
 \end{figure}
 
@@ -303,10 +322,10 @@ The second measure uses shares calculated directly from the Michigan survey. Sin
 Figure \ref{fig:shares} provides a visual summary of the shares. Panel \ref{subfig:shares:group} contains a box plot of the variation in weights by group and region after averaging over time. Weights vary between about $0.5\%$ to roughly $5.0\%$, with many groups comprising about 1\% of the survey sample. Groups below 80 are the ``M'' side of the tree in Figure \ref{fig:GroupTree}. Higher numbered groups are older, more educated, married, and have children. Panel \ref{subfig:shares:cps} presents the same box plot using the January 1978 CPS data, capturing the population distribution of these groups. While the CPS data has richer demographic information, including race, sex, and gender, these group definitions are the same as in panel \ref{subfig:shares:group}. The pattern of the shares is roughly similar, though because panel \ref{subfig:shares:group} averages over the entire sample period, there is a complete group representation in the shares.  
 
 
-Finally, to give a sense of the panel variation in the Michigan survey, Figure \ref{fig:sharesTime} contains box plots of the group shares for each region and period. The height of the box plot represents the central tendency and outliers in group shares. The figure summarizes increasing group diversity in the U.S. over time. More importantly, it is evident that there is substantial variation in group exposure across time and regions.
+Finally, to give a sense of the panel variation in the Michigan survey, Figure \ref{fig:sharesTime} contains box plots of the group shares for each region and average annual value. The height of the box plot represents the central tendency and outliers in group shares. The figure summarizes increasing group diversity in the U.S. over time. More importantly, it is evident that there is substantial variation in group exposure across time and regions.
 \begin{figure}
 \centering
-\caption{Calculated group shares over time.}\label{fig:sharesTime}
+\caption{Calculated group shares over time. Each box plot contains the group share distribution in a region at a moment in time. Circles indicate outliers.}\label{fig:sharesTime}
 \centering
 \includegraphics[width = 6in, height =5in]{figs/weightsTime.pdf}
 \end{figure}
@@ -315,7 +334,7 @@ Finally, to give a sense of the panel variation in the Michigan survey, Figure \
 
 \subsection{Preliminary results}
 
-Figure \ref{fig:redform} previews and visualizes the empirical estimates to follow. The left panels report results using the Michigan survey shift-share, while the right is for the CPS shift-share instrument. The top panels (\ref{subfig:redform:stage1:michigan}-\ref{subfig:redform:stage1:cps}) plot the first stage, and the bottom panels (\ref{subfig:redform:stage2:michigan}-\ref{subfig:redform:stage2:cps}) visualize the reduced-form regression of regional inflation on the Bartik instrument. In each panel, the solid line is the linear regression equation. The shift-shares correlate strongly with the Michigan survey expectations. The Michigan survey-based shift-share instrument correlates more closely with expectations than the instrument calculated with CPS78 shares.  
+Figure \ref{fig:redform} previews and visualizes the empirical estimates to follow. The left panels report results using the Michigan survey shift-share, while the right is for the CPS shift-share instrument. The top panels (\ref{subfig:redform:stage1:michigan}-\ref{subfig:redform:stage1:cps}) plot the first stage, and the bottom panels (\ref{subfig:redform:stage2:michigan}-\ref{subfig:redform:stage2:cps}) visualize the reduced-form regression of regional inflation on the Bartik instrument. In each panel, the solid line is the linear regression equation. The shift-shares correlate strongly with the Michigan survey expectations. The Michigan survey-based shift-share instrument correlates more closely with expectations than the instrument calculated with CPS78 shares.  In both cases, the first stage relationship is as expected: regions exposed to groups with high national expectations have high regional expectations.
 
 Panels (\ref{subfig:redform:stage2:michigan}-\ref{subfig:redform:stage2:cps}) plot the results from a reduced-form panel regression of the inflation rate on the predicted inflation expectations. Regardless of the instrument, there is a strong positive relationship between predicted inflation expectations and inflation.
 
@@ -327,29 +346,33 @@ The rest of the analysis probes the interpretation of the results in Figure \ref
 \begin{subfigure}[t]{0.475\textwidth}
 \centering
 \includegraphics[width = 3in, height =3in]{figs/firststage}
+%\input{figs/tex/firststage}
 \caption{First stage: shares calculated from Michigan survey.  }\label{subfig:redform:stage1:michigan}
 \end{subfigure}
 \quad
 \begin{subfigure}[t]{0.475\textwidth}
 \centering
 \includegraphics[width =3in, height =3in]{figs/firststage_cps}
+%\input{figs/tex/firststage_cps}
 \caption{First stage: shares calculated from 1978.1 CPS.}\label{subfig:redform:stage1:cps}
 \end{subfigure}
 \vfill
 \begin{subfigure}[t]{0.475\textwidth}
 \centering
 \includegraphics[width =3in, height =3in]{figs/redform}
+%\input{figs/tex/redform}
 \caption{OLS regression: Michigan shares.}\label{subfig:redform:stage2:michigan}
 \end{subfigure}
 \begin{subfigure}[t]{0.475\textwidth}
 \centering
 \includegraphics[width =3in, height =3in]{figs/redform_cps}
+%\input{figs/tex/redform_cps}
 \caption{OLS regression: CPS78 shares.}\label{subfig:redform:stage2:cps}
 \end{subfigure}
 \end{figure}
 
 
-\subsection{2sls estimates}
+\subsection{2sls estimates}\label{mainEstimates}
 
 
 
@@ -360,13 +383,13 @@ Tables \ref{tab:base:out:2sls:stage1}-\ref{tab:base:out:2sls:stage2} present the
 
 Table \ref{tab:base:out:2sls:stage1} provides first stage estimates. The Bartik instrument is relevant and has significant predictive power for inflation expectations. The Durbin-Wu-Hausman test statistic for endogeneity is 8.074, rejecting the consistency of OLS at a 1\% significance level. The first-stage F-statistic is 52.4, which is significant at the .1\% level. While the identifying variation in the shares is plausibly exogenous to regional inflation rates, in the case of CPS78, it is possible to probe the exogeneity assumption by examining whether those 1978 population shares are predictive of the regression covariates. In each case, there is no significant correlation between the covariates and the CPS group shares, and the regression coefficients are economically close to zero.
 
-The second stage estimates in Table \ref{tab:base:out:2sls:stage2} identify a significant and positive effect from subjective inflation expectations to inflation rates. Using the Michigan survey shares, the estimated coefficient is $0.3275$, so a 1\% increase in the average expected inflation rate in a region would lead to a 32 basis point increase in that region's inflation rate. The estimated coefficient is significant at the 5\% level. The estimated effect is stronger using the CPS 1978.1 population shares. The estimated coefficient is $0.5464$, at a 1\% significance level. Here, the pass-through from inflation expectations to inflation is greater than $\nicefrac{1}{2}$.  
+The second stage estimates in Table \ref{tab:base:out:2sls:stage2} identify a significant and positive effect from subjective inflation expectations to inflation rates. Using the Michigan survey shares, the estimated coefficient is $0.3351$, so a 1\% increase in the average expected inflation rate in a region would lead to a 34 basis point increase in that region's inflation rate. The estimated coefficient is significant at the 5\% level. The estimated effect is stronger using the CPS 1978.1 population shares. The estimated coefficient is $0.5465$, at a 1\% significance level. Here, the pass-through from inflation expectations to inflation is greater than $\nicefrac{1}{2}$.  
 
 When comparing the 2sls coefficient estimates to those in Figure \ref{subfig:intro:reg}, OLS estimates, where the correlation between inflation expectations and inflation was around $0.06$, are biased downwards. The empirical model does not account for spatial spillovers. Much like the literature on regional fiscal multipliers, after accounting for cross-regional spillovers -- an increase in inflation expectations in one region also impacts the demand for goods produced in a different region -- the aggregate impact of expectations is stronger than the regional effect. In Figure \ref{subfig:intro:us} it was seen that the correlation between aggregate inflation expectations and aggregate inflation rates is $0.18$. A similar magnitude in the 2sls estimates would imply a pass-through of approximately $1.0-1.6$.  
 
 The coefficient estimates are in line with the theoretical analysis in \cite{Werning:expectsWP}, which studies pass-through in a variety of conventional pricing models with time-dependent price rigidities while not making \emph{a priori} assumptions about the formation of subjective inflation expectations. While the pass-through from expectations to inflation can take any positive value, \cite{Werning:expectsWP} shows that for the Calvo and Taylor models of price stickiness, that pass-through should be in the range $\left[\nicefrac{1}{2},1\right]$, and possibly above one in a more general framework. While the regional estimates in Table \ref{tab:base:out:2sls:stage2} are on the lower end, or slightly below, of this range, after accounting for regional spillovers, the estimates are in line with the theoretical predictions.
 
-The panel data is susceptible to a potential finite sample bias. Of particular concern are the data's ``small N/big T'' dimensions. Table \ref{tab:bias:out:2sls:stage2} applies a split-sample jackknife bias correction (\cite{FernandezValWeidner:FE}). After correcting for finite sample bias in both the cross-section and time dimensions, the estimated effect of inflation expectations increases slightly.
+The panel data is susceptible to a potential finite sample bias. Of particular concern are the data's ``small N/big T'' dimensions. Table \ref{tab:bias:out:2sls:stage2} applies a split-sample jackknife bias correction (\cite{FernandezValWeidner:FE}). After correcting for finite sample bias in both the cross-section and time dimensions, the estimated effect of inflation expectations increases slightly. Table \ref{tab:bias:out:2sls:stage2} provides the preferred estimate: a 1\% increase in inflation expectations leads to a 60 basis point increase in (regional) inflation.
 
 \input{tables/biascorrections}
 
@@ -374,7 +397,7 @@ Another way to measure the impact of expectations is by estimating an impulse re
 $$ E_t\pi^R_{t+h} = \delta_{R,h} + \beta_h\pi^e_{R,t} + \gamma'_h x_{R,h} + \mu_{t,h} + \varepsilon_{R,h,t}$$
 for horizons $h=1,...,H$. The impulse response function then is given by $\left(\beta_h\right)_{1\leq h\leq H}$. The estimates are provided in Figure \ref{fig:base:irf}.
 
-On impact, inflation expectations have a significant positive effect on inflation. There is a cyclical dampening process that is mean-reverting within 12 months. However, the confidence bands are wide in future quarters and cannot rule out any lingering impacts. Thus, the estimates suggest a moderate contemporaneous response to inflation from a shock to inflation expectations. The lack of a strongly persistent expectation effect could reflect the specific U.S. inflation history. It would be interesting to extend the analysis to countries with persistently or volatile inflation.
+On impact, inflation expectations have a significant positive effect on inflation. There is a cyclical dampening process that is mean-reverting within 12 months. However, the confidence bands are wide in future quarters and cannot rule out any lingering impacts. Thus, the estimates suggest a moderate contemporaneous response to inflation from a shock to inflation expectations. The lack of a strongly persistent expectation effect could reflect the specific U.S. inflation history. It would be interesting to extend the analysis to countries with persistent or volatile inflation.
 
 
 \begin{figure}
@@ -404,7 +427,7 @@ where $\beta_g$ is the just identified estimate for group $g$. The weight $\alph
 \input{tables/weightsCPS.tex}
 \input{tables/weightsout}
 
-Tables \ref{tab:rotweights:cps}-\ref{tab:rotweights:michigan} detail the 10 groups with the highest Rotemberg weights, $\alpha_g$. Table \ref{tab:rotweights:cps} is for the case where the instrument is the CPS shares, and Table \ref{tab:rotweights:michigan} uses the Michigan survey shares. The table also lists the just-identified estimate for these top 10 groups. In both cases, the highest weighted groups are mostly younger with high school or above education. In the case of the CPS estimates, the highest weighted groups are 25-49 years old, and 6 of the groups have college degrees. Seven of the groups have been married with children. Using the Michigan shares instrument, Table \ref{tab:rotweights:michigan} shows that the top-10 groups are even younger than those identified by the CPS instrument. Most groups are 18-24, with one 25-34 and one 35-49. These groups also have at least a high school degree, though using the Michigan survey shares, 5/10 of the top groups have a high school degree, 3 have some college, and 2 have college degrees or more. Almost all of these groups are married without children.
+Tables \ref{tab:rotweights:cps}-\ref{tab:rotweights:michigan} detail the 10 groups with the highest Rotemberg weights, $\alpha_g$. Table \ref{tab:rotweights:cps} is for the case where the instrument is the CPS shares, and Table \ref{tab:rotweights:michigan} uses the Michigan survey shares. The table also lists the just-identified estimate for these top 10 groups. In both cases, the highest weighted groups are mostly younger with high school or above education. In the case of the CPS estimates, the highest weighted groups are 25-49 years old, and 6 of the groups have college degrees. Seven of the groups have been married with children. Using the Michigan shares instrument, Table \ref{tab:rotweights:michigan} shows that the top-10 groups are even younger than those identified by the CPS instrument. Most groups are 18-24, with one 25-34 and one 35-49. These groups also have at least a high school degree, though using the Michigan survey shares, 5/10 of the top groups have a high school degree, 3 have some college, and 1 have college degrees or more. Almost all of these groups are married without children.
 
 If the estimates in Table \ref{tab:base:out:2sls:stage2} capture heterogeneous treatment effects across groups, then it is not surprising that the two different Bartik instruments estimate different treatment effects. The Michigan shares instrument can capture shifting demographic trends in the U.S., whereas the CPS share instrument exploited differential exposure to population shares in 1978. In both cases, the group-specific effect $\beta_g$ is positive and significantly above 1 for these heavily weighted groups.  
 
@@ -426,7 +449,7 @@ From these findings, it is reasonable to conclude that the estimated impact of e
 
 \begin{figure}
 \centering
-\caption{Estimation weights across groups: Michigan shares.}\label{fig:rotweights:group}
+\caption{Estimation weights across groups: Michigan shares. Scatter plot of each group's first stage F-statistic against its just-identified effect. The size of the circle represents the Rotemberg weight. The largest circle are the top-10 groups. Triangles denote negative weights.}\label{fig:rotweights:group}
 \includegraphics[height=.85\textwidth, width = .85\textwidth]{figs/weightsout}
 \end{figure}
 
@@ -437,6 +460,27 @@ From these findings, it is reasonable to conclude that the estimated impact of e
 \end{figure}
 
 \input{tables/weightsGroupcps}
+
+\subsection{Probing identification}
+
+Identification in this study relies on the exogeneity of demographic group shares to regional inflation. The identifying assumption is that the effect of greater exposure to a specific group on inflation is solely through inflation expectations and not through any other channels. To assess the validity of this assumption, two approaches are taken. First, the relationship between demographic group-level distributions at the state level and factors potentially correlated with price shocks are examined. Second, the lack of a significant relationship between regional markups and group shares is investigated. 
+
+The underlying model incorporates consumption heterogeneity through idiosyncratic preference shocks, with expectations identified through cross-group variation in consumption baskets. However, if different groups pay different prices for identical goods due to their differing willingness to pay, the exclusion restriction may be challenged (see, Section \ref{subsec:markups}) . In such cases, regional variations in markups and pass-through could become endogenous to the group distribution. If markups and expectation pass-through correlate with the distribution of groups across regions, it does not necessarily violate the exclusion restriction, as long as group shares do not correlate with the inflation rate. 
+
+To explore this possibility, the relationship between markups and group shares across regions is assessed using state-level data. A proxy for markups is constructed using labor's share of output from the state-level data set in \cite{NakamuraSteinsson:AER2014}. The analysis focuses on key groups identified as important in driving the measured effect: see Table \ref{tab:rotweights:cps}.  As a visualization, Figure \ref{fig:markupsFig} scatters state-level CPS group shares and markups.  Not all groups are in all states in the 1978.1 CPS, so the figure focuses on those key groups in all states.  The scatterplot of state-level shares and markups indicates an overall downward-sloping trend, with only a few cases of upward-sloping trend.  Thus, states with a greater concentration of the key groups also have lower mark-ups. Moreover, the estimated relationship between markups and shares is mostly statistically insignificant. Similarly, panel regression analysis with group fixed effects reveals a non-significant negative slope. The small R-squared value indicates that shares do not strongly predict state-level markups. 
+
+\begin{figure}
+\centering
+\caption{Markups in 1978.1 across states and key groups. Each panel is a scatter plot of a key group's state population share in CPS 1978.1 and that state's markup.}\label{fig:markupsFig}
+\centering
+\includegraphics[width = 6in, height =5in]{figs/markups.pdf}
+\end{figure}
+
+\input{tables/table_markups}
+
+\input{tables/testIdent}
+
+An additional concern is the strict exogeneity assumption for shares. Recall that the identifying assumption is that the measured effect of greater relative exposure of one group only inflation through inflation expectations, and not through another channel.  To probe the identifying assumption, the state-level CPS shares are regressed on factors likely to be correlated with price shocks, such as the producer price index, unemployment rate, and state-level household personal income. Of particular interest, is whether producer price index -- a factor likely to be correlated with price shocks -- predicts initial group shares.  Table \ref{tab:table:identCheck} presents the results from a panel regression of CPS shares on the correlates and including state-level fixed effects.  The results show no significant relationship between the 1978 CPS shares and these correlates of price shocks, providing confidence in the exogeneity assumption.
 
 \subsection{Sectoral inflation}
 
@@ -456,6 +500,21 @@ The first two columns filter out specific survey responses. The first column, la
 
 The final two columns in Table \ref{tab:table:2sls:robust} construct the dependent variable and instrument differently. The third column (``state-CPI'') constructs the regional inflation measure using the state CPI measures developed by \cite{NakamuraSteinsson:QJE2022}. The regional CPI measures from the BLS are monthly for a shorter period than the length of the Michigan survey. The regional inflation constructed by state-level CPI aligns with the sample periods. A regional CPI emerges as a weighted average of the CPI for each state in a region, where the weights are the state's consumer expenditure share in the region. One downside to this alternative inflation measure is that the state level CPI's in \cite{NakamuraSteinsson:QJE2022} do not include all of the states in each region for the entire sample requiring some interpolation. Table \ref{tab:table:2sls:robust} illustrates that the alternative regional inflation measure does not impact estimation. Finally, the last column instruments for inflation expectations with a twelve-month lag of Michigan shares. If one is concerned that the contemporaneous Michigan survey measures -- meant to be nationally representative by the survey design -- may not be strictly exogenous. However, the CPS 1978.1 population shares being time-invariant, the lagged share measure is a compromise. The effect lies in the middle of the baseline estimates, as expected.
 
+\subsection{Common Effects}
+
+The estimates presented do not account for two potentially important channels for expectations.  First, national firms may set a common national price for their goods (\cite{DellaVignaGentzkow:QJE2019}).  Second, aggregate spillovers could produce correlated common time-fixed effects.  To gauge these potential impacts, this section estimates the following model:
+\begin{eqnarray*}
+\pi_{R,t} &=& \beta \pi^e_{R,t} + \gamma' x_{R,t} + \phi\pi^e_t +  v_{R,t}\\
+v_{R,t} &=& \lambda_R'F_t+\epsilon_{Rt}\\
+\pi^e_{R,t} &=& \zeta z_{R,t} + \vartheta \pi^e_t + \Lambda_R'F_t + u_{R,t}
+\end{eqnarray*}
+The model, based on \cite{Bai:2009} and \cite{Pesaran:2006}, develops a multi-factor error structure in order to use interactive effects and to control for common aggregate effects, here via the aggregate inflation expectations $\pi^e_t$.  \cite{HardingLamarche:EL} implement a version of \cite{Pesaran:2006} that accommodates endogeneity of $\pi^e_{R,t}$ with a suitable two-stage least squares estimator.  This framework captures the separate effect from a national pricing strategy as well as cross-sectional exposure to aggregate effects via the interactive fixed effects.  The observable common effect $\pi^e_t$ is measured as the median inflation expectation in the St. Louis Federal Reserve Bank's FRED database.\footnote{FRED code: ``MICH''.}  Augmenting the 2sls regression with cross-sectional averages of the explanatory variables proxies for the interactive fixed effects and addresses the usual endogeneity concern as well as the correlation between the fixed effects and $\pi^e_{R,t}$.
+
+Table \ref{tab:bias:commeffects:stage2} report the second stage coefficient estimates, reported with a jackknife bias correction.  In comparison to Table \ref{tab:bias:out:2sls:stage2}, the estimated impact of regional inflation expectations is smaller after accounting for aggregate inflation expectations and interactive fixed effects.  The estimated aggregate pass-through to regional inflation is the sum of the coefficient estimates $\hat{\beta}+\hat{\phi} = 0.691$.  Moreover, the impact of aggregate inflation expectations $\pi^e_t$ is roughly twice as strong as the regional inflation expectation $\pi^e_{R,t}$.  
+
+Interpreting the estimates in \ref{tab:bias:commeffects:stage2} require some caution.  \cite{Pesaran:2006} and \cite{HardingLamarche:EL} show that estimates of $\beta$ are unbiased as the number of regions become large.  It is also not obvious that the jackknife correction employed to for comparability to Table \ref{tab:bias:out:2sls:stage2} is the appropriate one for finite sample bias with interactive fixed effects and endogenous regressors.  However, if one accepts the relative magnitude of $\phi$ \emph{vis a vis} $\beta$, and applying that to the estimates in Table \ref{tab:bias:out:2sls:stage2}, then the aggregate pass-through measure is $1.8$.  This larger effect is in line with the range reported in Section \ref{mainEstimates}.
+\input{tables/biascorrectionsCCE}
+
 
 \section{Impact of five-year ahead inflation expectations}
 
@@ -471,26 +530,29 @@ Figure \ref{fig:5year:redform} plots the corresponding reduced-form estimates fo
 \begin{subfigure}[t]{0.75\textwidth}
 \centering
 \includegraphics[width = 5in, height =3in]{figs/firstStage5only}
+%\input{figs/tex/firstStage5only}
 \caption{First stage long-horizon expectations only. }\label{5yearsubfig:shares:group}
 \end{subfigure}
 \vfill
 \begin{subfigure}[t]{0.75\textwidth}
 \centering
 \includegraphics[width =5in, height =3in]{figs/redform5only}
+%\input{figs/tex/redform5only}
 \caption{Reduced form long-horizon expectations only.}\label{5yearsubfig:shares:cps}
 \end{subfigure}
 \end{figure}
 
-The 2sls estimates in Tables \ref{tab:2sls:shortandlong:stage1}-\ref{tab:2sls:shortandlong:stage2} confirm the reduced-form findings. In the first stage, the short- and long-run instruments are relevant for both short- and long-term inflation. The long-horizon instrument has no predictive power for short-run expectations. In the second stage (Table \ref{tab:2sls:shortandlong:stage2}), the coefficient estimates on short-run expectations are virtually identical to the preferred estimates. Long-horizon expectations have a small negative impact that is not statistically significant.  
+The 2sls estimates in Tables \ref{tab:table:2sls:shortlong:stage1}-\ref{tab:table:2sls:shortlong:stage2} confirm the reduced-form findings. In the first stage, the short- and long-run instruments are relevant for both short- and long-term inflation. The long-horizon instrument has no predictive power for short-run expectations. In the second stage (Table \ref{tab:table:2sls:shortandlong:stage2}), the coefficient estimates on short-run expectations are virtually identical to the preferred estimates. Long-horizon expectations have a small negative impact that is not statistically significant.  
 
 \input{tables/base1and5yearStage1}
 \input{tables/base1and5year}
 
-One might wonder if long-horizon expectations can ever proxy for short-run expectations and identify an effect acting on inflation. Tables \ref{tab:2sls:long:stage1}-\ref{tab:2sls:long:stage2} show that, again, there is no effect running from long-horizon expectations to inflation. While the estimated sign for long-horizon expectations is again positive, it is close to zero and insignificant.  
+One might wonder if long-horizon expectations can ever proxy for short-run expectations and identify an effect acting on inflation. Tables \ref{tab:base:5only:2sls:stage1}-\ref{tab:base:5only:2sls:stage2} show that, again, there is no effect running from long-horizon expectations to inflation. While the estimated sign for long-horizon expectations is again positive, it is close to zero and insignificant.  
 
 \input{tables/base5yearStage1}
 \input{tables/base5year}
- 
+
+The results on long-run expectations hold broader implications for monetary policy and the modeling of inflation expectations.
 \section{Conclusion}
 
 
@@ -502,11 +564,13 @@ The estimates identify a positive impact from inflation expectations to (regiona
 
 \pagebreak
 
-\bibliographystyle{/Users/billbranch/Dropbox/Cloud/Research/bibliography/econometrica}
+%\bibliographystyle{/Users/billbranch/Dropbox/Cloud/Research/bibliography/econometrica}
+\bibliographystyle{style/econometrica}
 
 
 %\bibliography{library_research_bill,harvard}
 
-\bibliography{/Users/billbranch/Dropbox/Cloud/Research/bibliography/library_research_bill}
+%\bibliography{/Users/billbranch/Dropbox/Cloud/Research/bibliography/library_research_bill}
+\bibliography{style/library_research_bill}
 
 \end{document}
