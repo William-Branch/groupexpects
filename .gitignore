@@ -1,0 +1,54 @@
+figs/*
+!figs/tex/*
+!figs/tex/.gitkeep
+tables/*
+data/dataBuild/*
+# General Programming Languages
+*.o
+*.pyc
+*.class
+*.log
+
+# R Project
+.Rhistory
+.Rproj.user
+*.RData
+*.Rds
+*.rda
+.Ruserdata
+.Renv
+packrat/
+renv.lock
+
+# Python Project
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# LaTeX Project
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+
+# Data files
+# *.csv
+# *.xls
+# *.db
+
+# macOS
+.DS_Store
+._*
+
+# Makefile
+# (Specify any compiled files generated from Makefile)
+
+# IDEs
+.vscode/
+.idea/
+.spyderproject
+
