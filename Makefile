@@ -111,6 +111,11 @@ paper: $(MAIN2SLS_OUTPUTS) $(DESCR_PLOTS_OUTPUTS) $(MAIN_WEIGHTS_OUTPUTS) $(MAIN
 	# Remove auxiliary files generated during compilation
 	rm -f *.aux *.log *.out *.toc *.blg *.bbl
 	
+#Target to push to GitHub
+update:
+	git add .
+	git commit -m "Updated on $(shell date)"
+	git push origin main
 # Target to clean any intermediate or output files
 clean:
 	rm -f $(DATA_BUILD_OUTPUTS) $(MAIN2SLS_OUTPUTS) $(DESCR_PLOTS_OUTPUTS) $(MAIN_WEIGHTS_OUTPUTS) $(ALT_ESTIMATES_OUTPUTS)
