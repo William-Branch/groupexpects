@@ -113,6 +113,7 @@ paper: $(MAIN2SLS_OUTPUTS) $(DESCR_PLOTS_OUTPUTS) $(MAIN_WEIGHTS_OUTPUTS) $(MAIN
 	
 #Target to push to GitHub
 update:
+	cp main.pdf docs/main.pdf && \
 	git add .
 	git commit -m "Updated on $(shell date)"
 	git push origin main
