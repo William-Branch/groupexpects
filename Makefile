@@ -100,14 +100,14 @@ $(ALT_ESTIMATES_OUTPUTS): $(SCRIPTS_DIR)/altEstimates.R $(FUNCTIONS_DIR)/functio
 
 # Target to compile specific TikZ to PDF
 $(SPECIFIC_PDF_FIGURES): %.pdf: %.tex
-	xelatex -jobname=$(basename $@) "\def\tikzfile{$(basename $<)}\input{compile_figure.tex}"
+	lualatex -jobname=$(basename $@) "\def\tikzfile{$(basename $<)}\input{compile_figure.tex}"
 
 # Make the 'paper' target depend on specific PDF figures
 paper: $(MAIN2SLS_OUTPUTS) $(DESCR_PLOTS_OUTPUTS) $(MAIN_WEIGHTS_OUTPUTS) $(MAIN_IRF_OUTPUTS) $(ALT_ESTIMATES_OUTPUTS) $(SPECIFIC_PDF_FIGURES)
-	xelatex main.tex && \
+	lualatex main.tex && \
 	bibtex main && \
-	xelatex main.tex && \
-	xelatex main.tex
+	lualatex main.tex && \
+	lualatex main.tex
 	# Remove auxiliary files generated during compilation
 	rm -f *.aux *.log *.out *.toc *.blg *.bbl
 	

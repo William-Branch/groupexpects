@@ -1,48 +1,26 @@
-\begin{table}
-
-\caption{\label{tab:table:2sls:shortlong:stage1}2SLS with short and long expectations: first stage}
-\centering
-\resizebox{\linewidth}{!}{
-\begin{threeparttable}
-\begin{tabular}[t]{lllll}
+\begin{landscape}
+\begin{table}[!htbp] \centering
+\caption{2SLS with short and long expectations: first stage}
+\label{tab:table:2sls:shortlong:stage1}
+\textbf{Panel A: CPS shares} \\ 
+\begin{tabular}[t]{>{}llccccccc}
 \toprule
-  & survey short pe & survey long pe & CPS78 short pe & CPS78 long pe\\
+  & (1)-pe & (1)-pe5 & (2)-pe & (2)-pe5 & (3)-pe & (3)-pe5 & (4)-pe & (4)-pe5\\
 \midrule
-\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{short-run pe} & \cellcolor{gray!6}{long-run pe} & \cellcolor{gray!6}{short-run pe} & \cellcolor{gray!6}{long-run pe}\\
-\addlinespace
- &  &  &  & \\
-\addlinespace
-\cellcolor{gray!6}{Bartik\_bench\_out} & \cellcolor{gray!6}{0.2487*** (0.0607)} & \cellcolor{gray!6}{0.2299 (0.1660)} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
-\addlinespace
-Bartik5\_bench\_out & -0.0042 (0.0101) & -0.1703** (0.0554) &  & \\
-\addlinespace
-\cellcolor{gray!6}{Bartik} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{0.4422** (0.1423)} & \cellcolor{gray!6}{0.0549 (0.3573)}\\
-\addlinespace
-Bartik5 &  &  & 0.0108 (0.0209) & -0.2662* (0.1275)\\
-\addlinespace
-\cellcolor{gray!6}{Controls} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
-\addlinespace
-Fixed-Effects: & ------------------ & ------------------ & ----------------- & -----------------\\
-\addlinespace
-\cellcolor{gray!6}{REGION} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
-\addlinespace
-TIME & Yes & Yes & Yes & Yes\\
-\addlinespace
-\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\\
-\addlinespace
-S.E. type & Drisco.-Kra. (L=4) & Drisco.-Kra. (L=4) & Drisc.-Kra. (L=4) & Drisc.-Kra. (L=4)\\
-\addlinespace
-\cellcolor{gray!6}{Observations} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387}\\
-\addlinespace
-R2 & 0.80356 & 0.40225 & 0.80139 & 0.39883\\
-\addlinespace
-\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.13753} & \cellcolor{gray!6}{0.04049} & \cellcolor{gray!6}{0.12800} & \cellcolor{gray!6}{0.03500}\\
+\textbf{\cellcolor{gray!10}{Cf.}} & \cellcolor{gray!10}{0.43 (0.03)} & \cellcolor{gray!10}{-0.27 (0.1)} & \cellcolor{gray!10}{1.35 (0.09)} & \cellcolor{gray!10}{0.65 (0.11)} & \cellcolor{gray!10}{1.48 (0.03)} & \cellcolor{gray!10}{0.62 (0.11)} & \cellcolor{gray!10}{0.26 (0.13)} & \cellcolor{gray!10}{-0.24 (0.1)}\\
+\textbf{$R^2$} & 0.80 & 0.40 & 0.68 & 0.18 & 0.72 & 0.19 & 0.78 & 0.38\\
+\textbf{\cellcolor{gray!10}{F}} & \cellcolor{gray!10}{12.17} & \cellcolor{gray!10}{4.13} & \cellcolor{gray!10}{261.22} & \cellcolor{gray!10}{46.66} & \cellcolor{gray!10}{315.11} & \cellcolor{gray!10}{45.74} & \cellcolor{gray!10}{5.37} & \cellcolor{gray!10}{4.43}\\
 \bottomrule
-\end{tabular}
-\begin{tablenotes}
-\item \textit{Note: } 
-\item Reports first stage from a panel regression with instruments for short and long expectations. Survey is the shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
-\item[1] Signif. codes: * = .05; ** = .01; *** = .001.
-\end{tablenotes}
-\end{threeparttable}}
-\end{table}
+\end{tabular} \vspace{5mm} 
+\\ \textbf{Panel B: Michigan shares} \\ 
+\begin{tabular}[t]{>{}llccccccc}
+\toprule
+  & (1)-pe & (1)-pe5 & (2)-pe & (2)-pe5 & (3)-pe & (3)-pe5 & (4)-pe & (4)-pe5\\
+\midrule
+\textbf{\cellcolor{gray!10}{Cf.}} & \cellcolor{gray!10}{0.24 (0.02)} & \cellcolor{gray!10}{-0.17 (0.06)} & \cellcolor{gray!10}{0.75 (0.02)} & \cellcolor{gray!10}{0.33 (0.04)} & \cellcolor{gray!10}{0.74 (0.02)} & \cellcolor{gray!10}{0.35 (0.04)} & \cellcolor{gray!10}{0.23 (0.02)} & \cellcolor{gray!10}{-0.19 (0.05)}\\
+\textbf{$R^2$} & 0.80 & 0.40 & 0.72 & 0.18 & 0.74 & 0.19 & 0.79 & 0.39\\
+\textbf{\cellcolor{gray!10}{F}} & \cellcolor{gray!10}{17.17} & \cellcolor{gray!10}{6.64} & \cellcolor{gray!10}{372.11} & \cellcolor{gray!10}{42.85} & \cellcolor{gray!10}{384.19} & \cellcolor{gray!10}{45.73} & \cellcolor{gray!10}{15.48} & \cellcolor{gray!10}{8.90}\\
+\bottomrule
+\end{tabular}\end{table}
+\end{landscape}
+

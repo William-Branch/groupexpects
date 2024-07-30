@@ -85,6 +85,8 @@ pCPS <- generate_cps_weights_plot(region_CPS78)
 
 pgroups <- plot_group_mean_expectations(localdataBig)
 
+pShareDists <- plot_share_distributions(region_CPS78, region_data)
+
 # Save the PDF plots
 #ggsave("figs/regions.pdf", pCR)
 #ggsave("figs/menwomen.pdf", pMW)

@@ -1,41 +1,24 @@
-\begin{table}
-
-\caption{\label{tab:base:5only:2sls:stage1}2SLS with long expectations: first stage}
-\centering
-\begin{threeparttable}
-\begin{tabular}[t]{lll}
+\begin{table}[!htbp] \centering
+\caption{2SLS with long expectations: first stage}
+\label{tab:base:5only:2sls:stage1}
+\textbf{Panel A: CPS shares} \\ 
+\begin{tabular}[t]{>{}llccccccc}
 \toprule
-  & survey & CPS78\\
+  & (1)-pe & (1)-U & (2)-pe & (2)-U & (3)-pe & (3)-U & (4)-pe & (4)-U\\
 \midrule
-\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{long-run pe} & \cellcolor{gray!6}{long-run pe}\\
-\addlinespace
- &  & \\
-\addlinespace
-\cellcolor{gray!6}{Bartik5} & \cellcolor{gray!6}{1.012*** (0.0357)} & \cellcolor{gray!6}{0.8641*** (0.0730)}\\
-\addlinespace
-Controls & Yes & Yes\\
-\addlinespace
-\cellcolor{gray!6}{Fixed-Effects:} & \cellcolor{gray!6}{-----------------} & \cellcolor{gray!6}{------------------}\\
-\addlinespace
-REGION & Yes & Yes\\
-\addlinespace
-\cellcolor{gray!6}{TIME} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
-\addlinespace
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-\addlinespace
-\cellcolor{gray!6}{S.E. type} & \cellcolor{gray!6}{Drisc.-Kra. (L=4)} & \cellcolor{gray!6}{Drisco.-Kra. (L=4)}\\
-\addlinespace
-Observations & 1,387 & 1,387\\
-\addlinespace
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.60723} & \cellcolor{gray!6}{0.44158}\\
-\addlinespace
-Within R2 & 0.36952 & 0.10361\\
+\textbf{\cellcolor{gray!10}{Coef.}} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{0.579} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{0.516} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{0.446} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{0.779}\\
+\textbf{$R^2$} & 0.397 & 0.967 & 0.178 & 0.738 & 0.185 & 0.755 & 0.380 & 0.963\\
+\textbf{\cellcolor{gray!10}{F (1st stage)}} & \cellcolor{gray!10}{6.199} & \cellcolor{gray!10}{197.406} & \cellcolor{gray!10}{65.717} & \cellcolor{gray!10}{204.326} & \cellcolor{gray!10}{62.025} & \cellcolor{gray!10}{145.662} & \cellcolor{gray!10}{5.276} & \cellcolor{gray!10}{604.334}\\
 \bottomrule
-\end{tabular}
-\begin{tablenotes}
-\item \textit{Note: } 
-\item First stage with long expectations only. Instruments computed using a leave-one-out procedure. Survey is the shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
-\item[1] Signif. codes: * = .05; ** = .01; *** = .001.
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
+\end{tabular} \vspace{5mm} 
+\\ \textbf{Panel B: Michigan shares} \\ 
+\begin{tabular}[t]{>{}llccccccc}
+\toprule
+  & (1)-pe & (1)-U & (2)-pe & (2)-U & (3)-pe & (3)-U & (4)-pe & (4)-U\\
+\midrule
+\textbf{\cellcolor{gray!10}{Coef.}} & \cellcolor{gray!10}{0.204} & \cellcolor{gray!10}{0.579} & \cellcolor{gray!10}{-0.347} & \cellcolor{gray!10}{0.516} & \cellcolor{gray!10}{-0.328} & \cellcolor{gray!10}{0.446} & \cellcolor{gray!10}{0.173} & \cellcolor{gray!10}{0.779}\\
+\textbf{$R^2$} & 0.401 & 0.967 & 0.176 & 0.738 & 0.192 & 0.755 & 0.388 & 0.963\\
+\textbf{\cellcolor{gray!10}{F (1st stage)}} & \cellcolor{gray!10}{6.636} & \cellcolor{gray!10}{197.406} & \cellcolor{gray!10}{42.850} & \cellcolor{gray!10}{204.326} & \cellcolor{gray!10}{45.730} & \cellcolor{gray!10}{145.662} & \cellcolor{gray!10}{8.904} & \cellcolor{gray!10}{604.334}\\
+\bottomrule
+\end{tabular}\end{table}
+

@@ -7,6 +7,7 @@ source('scripts/common_libraries.R')
 source('functions/functions_results.R')
 source('functions/functions_data.R')
 
+
 master_data <- load_master_data("data/dataBuild/masterdataSmallNo5.csv")
 local_data <- read_csv("data/dataBuild/localdataSmall.csv") %>% filter(!is.na(REGION))
 local_data_cps <- read_csv("data/dataBuild/localdataCPS.csv")
@@ -146,6 +147,8 @@ BwaggSmall_2 <- BwaggSmall_out %>%
   arrange(desc(AggAlpha)) 
 
 # Generate tables
+colnames(printAgg_out) <- c("group id", "$\\alpha_g$", "$\\beta_g$")
+colnames(printAgg_cps) <- c("group id", "$\\alpha_g$", "$\\beta_g$")
 generate_weights_table(printAgg_out, "tables/weightsout.tex","rotweights:michigan" , "Top 10 weighted groups: Michigan shares")
 generate_weights_table(printAgg_cps, "tables/weightsCPS.tex", "rotweights:cps", "Top 10 weighted groups: CPS shares")
 
@@ -267,7 +270,7 @@ Bartik_CPS78 <- merge(state_CPS78, data_globalCPS) %>%
 #   summarise(Bartik_cps = sum(prop*Agg_pe_ind))# %>%
 #   #mutate(REGION = cenREGION)
 
-Bartik_CPS78 <- Bartik_CPS78 %>%
+Bartik_CPS78 <- Bartik_CPS78 %>% 
   group_by(STATEFIP, survey_date, group,prop) %>%
   summarise(Bartik_cps = sum(prop*Agg_pe_ind)) 
 

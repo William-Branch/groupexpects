@@ -1,44 +1,38 @@
-\begin{table}
-
-\caption{\label{tab:table:2sls:shortlong:stage2}2SLS with short and long expectations: coefficient estimates}
-\centering
-\resizebox{\linewidth}{!}{
-\begin{threeparttable}
-\begin{tabular}[t]{lll}
+\begin{table}[!htbp] \centering
+\caption{2SLS with short and long expectations: coefficient estimates}
+\label{tab:table:2sls:shortlong:stage2}
+\textbf{Panel A: CPS shares} \\ 
+\begin{tabular}{lllll}
 \toprule
-  & survey & CPS78\\
+ & (1) & (2) & (3) & (4)\\
 \midrule
-\cellcolor{gray!6}{Dependent Var.:} & \cellcolor{gray!6}{RegInf} & \cellcolor{gray!6}{RegInf}\\
+\cellcolor{gray!10}{$p^e$} & \cellcolor{gray!10}{0.547 (0.070)***} & \cellcolor{gray!10}{0.299 (0.044)***} & \cellcolor{gray!10}{0.302 (0.050)***} & \cellcolor{gray!10}{0.731 (0.143)**}\\
+$p5^e$ & -0.043 (0.059) & 0.047 (0.012)** & 0.044 (0.023) & -0.047 (0.062)\\
+\cellcolor{gray!10}{$u^r$} & \cellcolor{gray!10}{-0.163 (0.079)} & \cellcolor{gray!10}{-0.014 (0.017)} & \cellcolor{gray!10}{-0.016 (0.037)} & \cellcolor{gray!10}{0.030 (0.080)}\\
+N & 1,387 & 1,387 & 1,387 & 1,387\\
+\cellcolor{gray!10}{R2} & \cellcolor{gray!10}{0.937} & \cellcolor{gray!10}{0.924} & \cellcolor{gray!10}{0.925} & \cellcolor{gray!10}{0.913}\\
 \addlinespace
- &  & \\
-\addlinespace
-\cellcolor{gray!6}{short-run pe} & \cellcolor{gray!6}{0.3490* (0.1428)} & \cellcolor{gray!6}{0.5396** (0.1930)}\\
-\addlinespace
-long-run pe & -0.0193 (0.0451) & -0.0372 (0.0747)\\
-\addlinespace
-\cellcolor{gray!6}{Controls} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
-\addlinespace
-Fixed-Effects: & ---------------- & -----------------\\
-\addlinespace
-\cellcolor{gray!6}{REGION} & \cellcolor{gray!6}{Yes} & \cellcolor{gray!6}{Yes}\\
-\addlinespace
-TIME & Yes & Yes\\
-\addlinespace
-\cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_} & \cellcolor{gray!6}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\\
-\addlinespace
-S.E. type & Dris.-Kra. (L=4) & Drisc.-Kra. (L=4)\\
-\addlinespace
-\cellcolor{gray!6}{Observations} & \cellcolor{gray!6}{1,387} & \cellcolor{gray!6}{1,387}\\
-\addlinespace
-R2 & 0.95278 & 0.93845\\
-\addlinespace
-\cellcolor{gray!6}{Within R2} & \cellcolor{gray!6}{0.54258} & \cellcolor{gray!6}{0.40381}\\
+within R2 & 0.388 &  & 0.924 & 0.206\\
+\cellcolor{gray!10}{Region FE} & \cellcolor{gray!10}{X} & \cellcolor{gray!10}{} & \cellcolor{gray!10}{X} & \cellcolor{gray!10}{}\\
+Time FE & X &  &  & X\\
+\cellcolor{gray!10}{SE} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION}\\
 \bottomrule
-\end{tabular}
-\begin{tablenotes}
-\item \textit{Note: } 
-\item Coefficient estimates with instruments for short and long expectations. Survey is the shift-share instrument using Michigan survey shares. CPS78 is constructed from the 1978.1 CPS.
-\item[1] Signif. codes: * = .05; ** = .01; *** = .001.
-\end{tablenotes}
-\end{threeparttable}}
-\end{table}
+\end{tabular} \vspace{5mm} 
+\\ \textbf{Panel B: Michigan shares} \\ 
+\begin{tabular}{lllll}
+\toprule
+ & (1) & (2) & (3) & (4)\\
+\midrule
+\cellcolor{gray!10}{$p^e$} & \cellcolor{gray!10}{0.354 (0.079)**} & \cellcolor{gray!10}{0.269 (0.037)***} & \cellcolor{gray!10}{0.271 (0.033)***} & \cellcolor{gray!10}{0.378 (0.090)**}\\
+$p5^e$ & -0.023 (0.043) & 0.046 (0.012)** & 0.041 (0.012)** & -0.013 (0.046)\\
+\cellcolor{gray!10}{$u^r$} & \cellcolor{gray!10}{-0.136 (0.055)*} & \cellcolor{gray!10}{-0.009 (0.019)} & \cellcolor{gray!10}{-0.009 (0.034)} & \cellcolor{gray!10}{0.017 (0.052)}\\
+N & 1,387 & 1,387 & 1,387 & 1,387\\
+\cellcolor{gray!10}{R2} & \cellcolor{gray!10}{0.952} & \cellcolor{gray!10}{0.925} & \cellcolor{gray!10}{0.927} & \cellcolor{gray!10}{0.949}\\
+\addlinespace
+within R2 & 0.537 &  & 0.926 & 0.533\\
+\cellcolor{gray!10}{Region FE} & \cellcolor{gray!10}{X} & \cellcolor{gray!10}{} & \cellcolor{gray!10}{X} & \cellcolor{gray!10}{}\\
+Time FE & X &  &  & X\\
+\cellcolor{gray!10}{SE} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION} & \cellcolor{gray!10}{by: REGION}\\
+\bottomrule
+\end{tabular}\end{table}
+

@@ -1,0 +1,207 @@
+% billstyle-2024.sty
+
+% Paper size
+\special{papersize=8.5in,11in}
+
+% Essential packages
+\usepackage{utopia,amssymb,amsfonts,amsmath,latexsym,setspace}
+\usepackage{graphicx}
+\usepackage{natbib,fancyhdr}
+\usepackage[light]{iwona}
+\renewcommand*{\familydefault}{\rmdefault}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[colorlinks,breaklinks,
+    bookmarks=false,
+    pdfstartview=Fit,  % for fitting entire page; FitW just fits width
+    pdfpagemode=UseNone,
+    urlcolor=BillBlue,
+    citecolor=BillBlue,
+    linkcolor=BillGreen,
+    colorlinks=true,
+    bookmarksopen=false,
+    pdfpagelayout=SinglePage]{hyperref}
+\usepackage{titlesec}
+\usepackage{mathtools}
+\usepackage{sectsty}
+\usepackage{xcolor}
+
+% Font settings
+\usepackage{fontspec}
+\setmainfont{Libertinus Serif}        % Libertinus
+%\setmainfont{TeX Gyre Termes}  % Like Times New Roman
+
+% Page dimensions and headers
+\setlength{\evensidemargin}{-0.2in}
+\setlength{\oddsidemargin}{-0.2in}
+\setlength{\textwidth}{6.7in}
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{9.5in}
+
+\pagestyle{fancy}
+\lhead[\fancyplain{}{\bf\thepage}]{\fancyplain{}{}}
+\rhead[\fancyplain{}{}]{\fancyplain{}{\bf\thepage}}
+\chead[\fancyplain{}{}]{\fancyplain{}{}}
+\cfoot[\fancyplain{}{}]{\fancyplain{}{}}
+\renewcommand{\headrulewidth}{0pt}
+
+% Colors
+\definecolor{GGbridge}{rgb}{.7529, .2118,.1725}
+\definecolor{BillBlue}{rgb}{0,.2,.5}
+\definecolor{BillLightBlue}{rgb}{.24,.44,.54}
+\definecolor{BillRed}{rgb}{.541,.2,.141}
+\definecolor{BillGreen}{rgb}{0,.4,0}
+\definecolor{BillGray}{rgb}{.9,.9,.9}
+
+% Title, author, and date formatting
+% \makeatletter
+% \renewcommand{\maketitle}{
+%   \begin{center}
+%     {\huge \bfseries \color{BillBlue} \@title \par}
+%     \vskip 1.5em
+%     {\large \color{black} \@author \par}
+%     \vskip 1em
+%     {\color{black} \@date \par}
+%     \vskip 1em
+%   \end{center}
+%   \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%   \@thanks
+%   \setcounter{footnote}{1}
+%   \renewcommand{\thefootnote}{\arabic{footnote}}
+% }
+% \makeatother
+
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begingroup
+    \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
+    \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
+    \long\def\@makefntext##1{\parindent 1em\noindent
+            \hb@xt@1.8em{%
+                \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
+    \if@twocolumn
+      \ifnum \col@number=\@ne
+        \@maketitle
+      \else
+        \twocolumn[\@maketitle]%
+      \fi
+    \else
+      \newpage
+      \global\@topnum\z@   % Prevents figures from going at top of page.
+      \@maketitle
+    \fi
+    \thispagestyle{plain}\@thanks
+  \endgroup
+  \setcounter{footnote}{0}%
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@maketitle\relax
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+}
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\huge \bfseries \color{BillBlue}\@title \par}%
+    \vskip 1.5em%
+    {\large \color{black}\@author \par}%
+    \vskip 1em%
+    {\color{black}\@date \par}%
+    \vskip 1em%
+  \end{center}%
+  \par
+  \vskip 1.5em
+}
+\makeatother
+
+% Section title formatting
+% Title color
+\usepackage{sectsty}
+\sectionfont{\color{BillBlue}}
+\subsectionfont{\color{BillBlue}}
+\subsubsectionfont{\color{BillBlue}}
+
+
+\makeatletter
+\renewcommand\tagform@[1]{\maketag@@@{\color{BillGreen}(#1)}}
+\makeatother
+
+
+
+
+
+% Additional packages for your article
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{nicefrac}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+% THEOREMS
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{acknowledgement}[theorem]{\color{BillRed} Acknowledgement}
+\newtheorem{axiom}[theorem]{\color{BillRed} Axiom}
+\newtheorem{case}[theorem]{\color{BillRed} Case}
+\newtheorem{claim}[theorem]{\color{BillRed} Claim}
+\newtheorem{conclusion}[theorem]{\color{BillRed} Conclusion}
+\newtheorem{condition}[theorem]{\color{BillRed} Condition}
+\newtheorem{conjecture}[theorem]{\color{BillRed} Conjecture}
+\newtheorem{corollary}[theorem]{\color{BillRed} Corollary}
+\newtheorem{criterion}[theorem]{\color{BillRed} Criterion}
+\newtheorem{definition}[theorem]{\color{BillRed} Definition}
+\newtheorem{example}[theorem]{\color{BillRed} Example}
+\newtheorem{exercise}[theorem]{\color{BillRed} Exercise}
+\newtheorem{lemma}[theorem]{\color{BillRed} Lemma}
+\newtheorem{notation}[theorem]{\color{BillRed} Notation}
+\newtheorem{proposition}[theorem]{\color{BillRed} Proposition}
+\newtheorem{remark}[theorem]{\color{BillRed} Remark}
+\newtheorem{solution}[theorem]{\color{BillRed} Solution}
+\newtheorem{algorithm}[theorem]{\color{BillRed} Algorithm}
+
+% Custom commands
+\newcommand{\pfrac}[2]{\left( \frac{#1}{#2} \right)}  % frac with large paren
+\newcommand{\limfunc}[1]{\text{#1}}
+\newcommand{\vs}{\vskip .15 in}
+\newcommand{\hs}{\hskip 3pt}
+\newcommand{\n}{\noindent}
+\newcommand{\ii}{^{-1}}
+\newcommand{\ve}{\varepsilon}
+
+
+% Mathematical sets
+\newcommand{\re}{\mathbb{R}}
+\newcommand{\qe}{\mathbb{Q}}
+\newcommand{\nn}{\mathbb{N}}
+
+% Equation commands
+\newcommand{\be}{\begin{eqnarray*}}
+\newcommand{\ee}{\end{eqnarray*}}
+\newcommand{\bes}{\begin{equation}}
+\newcommand{\ees}{\end{equation}}
+\newcommand{\bem}{\begin{eqnarray}}
+\newcommand{\eem}{\end{eqnarray}}
+
+% Box for end of proof
+\newcommand{\bloc}{\ \rule{0.5em}{0.5em}}
+
