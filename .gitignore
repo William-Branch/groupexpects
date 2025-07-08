@@ -52,3 +52,5 @@ venv/
 .idea/
 .spyderproject
 
+main.fdb_latexmk
+main.fls
